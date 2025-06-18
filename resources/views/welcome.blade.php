@@ -16,7 +16,8 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body>
+    <body class="bg-emerald-50">
+        <x-layouts.app.navbar />
         <x-home.hero-practice />
         <x-home.category />
     </body>
