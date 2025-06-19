@@ -19,6 +19,6 @@
     <body class="bg-emerald-50">
         <x-layouts.app.navbar />
         <x-home.hero-practice />
-        <x-home.category />
+        {{-- <x-home.category /> --}}
     </body>
 </html>

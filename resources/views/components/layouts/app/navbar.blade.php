@@ -1,5 +1,5 @@
 <!-- Main navigation container -->
-<nav class="relative flex w-full flex-wrap items-center justify-between py-3 shadow-md bg-gradient-to-r from-emerald-300 to-cyan-50 dark:bg-gray-900 bg-blur-100">
+<nav class="relative flex w-full flex-wrap items-center justify-between py-3 shadow-md bg-gradient-to-r from-emerald-300 via-cyan-200 to-emerald-200 dark:bg-gray-900 bg-blur-100">
   <div class="flex w-full flex-wrap items-center justify-between px-6">
 
     <!-- Logo -->
@@ -38,7 +38,7 @@
         Join For Free
       </a>
     </div>
-  </div>
+</div>
 
   <!-- Mobile action buttons -->
   <div class="lg:hidden px-6 mt-4 flex flex-col gap-2" id="mobile-menu">
