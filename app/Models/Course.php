@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Scopes\ActiveScope;
 
 class Course extends Model
 {
     use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -38,6 +40,11 @@ class Course extends Model
         ];
     }
 
+    // get published courses
+    public function scopePublished($query) {
+        return $query->where('status', 'published');
+    }
+
     public static function setSlug ($course) {
         $course->slug = Str::slug($course->title);
     }
@@ -46,12 +53,13 @@ class Course extends Model
     public static function boot(){
         parent::boot();
 
+        // Globally add for all query.
+        // static::addGlobalScope(new \App\Models\Scopes\ActiveScope);
+
         static::creating(fn ($course) => static::setSlug($course));
         // only change slug if title was updated.
         static::updating(fn ($course) => $course->isDirty('title') && static::setSlug($course));
     }
-
-
 
     /**
      * Get the instructor that owns the Course
