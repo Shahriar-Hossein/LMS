@@ -29,11 +29,11 @@
 
     <!-- Action buttons -->
     <div class="hidden lg:flex items-center space-x-3">
-      <a href="#"
+      <a href="/login"
         class="text-cyan-600 border border-cyan-600 hover:bg-cyan-600 hover:text-white transition px-4 py-2 rounded-md text-sm">
         Login
       </a>
-      <a href="#"
+      <a href="/register"
         class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md text-sm shadow-md transition">
         Join For Free
       </a>
@@ -42,10 +42,10 @@
 
   <!-- Mobile action buttons -->
   <div class="lg:hidden px-6 mt-4 flex flex-col gap-2" id="mobile-menu">
-    <a href="#" class="text-cyan-600 border border-cyan-600 hover:bg-cyan-600 hover:text-white transition px-4 py-2 rounded-md text-sm text-center">
+    <a href="/login" class="text-cyan-600 border border-cyan-600 hover:bg-cyan-600 hover:text-white transition px-4 py-2 rounded-md text-sm text-center">
       Login
     </a>
-    <a href="#" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md text-sm text-center shadow-md transition">
+    <a href="/register" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md text-sm text-center shadow-md transition">
       Join For Free
     </a>
   </div>
