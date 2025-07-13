@@ -4,6 +4,6 @@
 
 @section('content')
 
-    <x-home.hero />
+    @include('home.hero')
 
 @endsection
