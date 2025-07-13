@@ -60,6 +60,11 @@
     @apply grid gap-2;
 }
 
+flux\:link,
+[data-flux-link] {
+    @apply text-emerald-600 hover:text-cyan-600 underline transition-colors duration-200;
+}
+
 [data-flux-label] {
     @apply !mb-0 !leading-tight;
 }

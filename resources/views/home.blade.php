@@ -1,4 +1,4 @@
-@extends('components.layouts.base')
+@extends('layouts.app')
 
 @section('title', 'Home')
 
