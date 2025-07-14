@@ -29,6 +29,7 @@ class Register extends Component
     public function register(): void
     {
         $validated = $this->validate([
+            'role' => ['required', 'string','in:student,instructor'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
@@ -48,7 +49,7 @@ class Register extends Component
             ]);
         }
         event(new Registered(($user = User::create($validated))));
-
+        $user->assignRole($validated['role']);
         Auth::login($user);
 
         $this->redirect(route('dashboard', absolute: false), navigate: true);
