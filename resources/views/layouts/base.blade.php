@@ -4,7 +4,7 @@
     @include('partials.head')
 </head>
 
-<body class="bg-emerald-50">
+<body class="bg-emerald-50 dark:bg-zinc-800">
 
     {{-- Navbar --}}
     @include('partials.navbar')
