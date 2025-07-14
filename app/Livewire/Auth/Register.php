@@ -17,6 +17,8 @@ class Register extends Component
 
     public string $email = '';
 
+    public string $role = '';
+
     public string $password = '';
 
     public string $password_confirmation = '';
@@ -33,7 +35,18 @@ class Register extends Component
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
-
+        // need to check at this point if everthing is working and livewire component getting proper data
+        // dd($validated, $this->name, $this->email, $this->role);
+        // print_r($validated);
+        // die();
+        if (app()->isLocal()) {
+            logger([
+                'validated' => $validated,
+                'name' => $this->name,
+                'email' => $this->email,
+                'role' => $this->role,
+            ]);
+        }
         event(new Registered(($user = User::create($validated))));
 
         Auth::login($user);
