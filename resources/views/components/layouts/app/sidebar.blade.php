@@ -25,6 +25,9 @@
                 </div>
 
 
+                @php
+                    $role = auth()->user()->getRoleNames()->first();
+                @endphp
                 <!-- Navigation -->
                 <nav class="space-y-2">
                     <div>
@@ -36,6 +39,10 @@
                             <x-icon name="home" class="w-4 h-4 mr-2" />
                             {{ __('Dashboard') }}
                         </a>
+
+                        @if ($role === 'instructor')
+                            @include('components.layouts.app.instructor-sidebar-options')
+                        @endif
                         <a href="{{ route('dashboard') }}"
                            class="flex items-center px-3 py-2 text-sm font-medium rounded-md
                                   {{ request()->routeIs('Course') ? 'bg-zinc-200 dark:bg-zinc-700 text-black dark:text-white' : 'text-gray-700 hover:bg-zinc-100 dark:text-gray-300 dark:hover:bg-zinc-800' }}"
@@ -92,7 +99,7 @@
                             <x-icon name="home" class="w-4 h-4 mr-2" />
                             {{ __('Reports & Analytics') }}
                         </a>
-                        
+
                     </div>
                 </nav>
             </div>
