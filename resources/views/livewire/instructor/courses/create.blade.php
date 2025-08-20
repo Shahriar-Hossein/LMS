@@ -47,8 +47,8 @@
             <label for="status" class="block text-sm font-medium text-zinc-700 dark:text-zinc-200">{{ __('Status') }}</label>
             <select id="status" wire:model.defer="status" class="cursor-pointer mt-1 block w-full border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm p-2 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
                 <option value="draft" class="cursor-pointer">{{ __('Draft') }}</option>
-                <option value="pending" class="cursor-pointer">{{ __('Pending') }}</option>
-                <option value="published" class="cursor-pointer">{{ __('Published') }}</option>
+                <option value="pending" disabled class="cursor-not-allowed">{{ __('Pending') }}</option>
+                <option value="published" disabled class="cursor-not-allowed">{{ __('Published') }}</option>
             </select>
             @error('status') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
         </div>

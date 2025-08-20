@@ -4,6 +4,6 @@
 
 @section('content')
 
-    @include('home.hero')
+    @include('pages.home.hero')
 
 @endsection
