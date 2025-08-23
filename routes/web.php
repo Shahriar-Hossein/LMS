@@ -1,31 +1,64 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
-use Illuminate\Support\Facades\Route;
+use App\Livewire\Instructor\Dashboard as InstructorDashboard;
+use App\Livewire\Instructor\Courses\Index as InstructorCourseIndex;
 use App\Livewire\Instructor\Courses\Create as InstructorCourseCreate;
-// use App\Livewire\Instructor\Courses\Index as InstructorCourseIndex;
+use App\Livewire\Instructor\Courses\Edit as InstructorCourseEdit;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
+
+// Public routes
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
-Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
+// ==========================
+// Admin Routes (later)
+// ==========================
 
-    Route::get('settings/profile', Profile::class)->name('settings.profile');
-    Route::get('settings/password', Password::class)->name('settings.password');
-    Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+
+// ==========================
+// Instructor Routes
+// ==========================
+Route::middleware(['auth', 'role:instructor'])
+    ->prefix('instructor')
+    ->name('instructor.')
+    ->group(function () {
+        // Dashboard
+        Route::get('/dashboard', InstructorDashboard::class)->name('dashboard');
+
+        // Courses
+        Route::prefix('courses')->name('courses.')->group(function () {
+            Route::get('/', InstructorCourseIndex::class)->name('index');
+            Route::get('/create', InstructorCourseCreate::class)->name('create');
+            Route::get('/{course}/edit', InstructorCourseEdit::class)->name('edit');
+        });
+    });
+
+
+// ==========================
+// Student Routes (later)
+// ==========================
+
+
+// ==========================
+// User Settings
+// ==========================
+Route::middleware(['auth'])->prefix('settings')->name('settings.')->group(function () {
+    Route::redirect('/', 'settings/profile');
+    Route::get('/profile', Profile::class)->name('profile');
+    Route::get('/password', Password::class)->name('password');
+    Route::get('/appearance', Appearance::class)->name('appearance');
 });
 
-Route::middleware(['auth', 'role:instructor'])->prefix('instructor')->name('instructor.')->group(function () {
-    // Route::get('/courses', InstructorCourseIndex::class)->name('courses.index');
-    Route::get('/courses/create', InstructorCourseCreate::class)->name('courses.create');
-});
 
 require __DIR__.'/auth.php';

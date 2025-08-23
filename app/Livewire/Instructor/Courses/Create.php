@@ -7,9 +7,9 @@ use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
-use Livewire\Component;
+use App\Livewire\Instructor\BaseComponent;
 
-class Create extends Component
+class Create extends BaseComponent
 {
     public string $title = '';
     public string $description = '';

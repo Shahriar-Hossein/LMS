@@ -1,10 +1,10 @@
 <div class="max-w-5xl mx-auto p-6">
     <div class="bg-white dark:bg-zinc-900 shadow rounded-2xl p-6 space-y-6">
         <h1 class="text-2xl font-bold text-zinc-800 dark:text-zinc-100">
-            {{ __('Create New Course') }}
+            {{ __('Edit Course') }}
         </h1>
 
-        <form wire:submit.prevent="save" class="space-y-6">
+        <form wire:submit.prevent="update" class="space-y-6">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <!-- Title -->
                 <div>
@@ -105,7 +105,7 @@
                     class="inline-flex items-center px-5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 transition disabled:opacity-50"
                 >
                     <x-icon name="check-circle" class="w-5 h-5 mr-2" />
-                    {{ __('Create Course') }}
+                    {{ __('Update Course') }}
                 </button>
             </div>
         </form>
