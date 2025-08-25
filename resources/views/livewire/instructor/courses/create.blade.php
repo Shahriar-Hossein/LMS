@@ -81,22 +81,50 @@
                 </div>
             </div>
 
-            {{-- <!-- Status -->
-            <div>
-                <label for="status" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                    {{ __('Status') }}
-                </label>
-                <select
-                    id="status"
-                    wire:model.defer="status"
-                    class="mt-2 block w-full rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 p-2 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
-                >
-                    <option value="draft">{{ __('Draft') }}</option>
-                    <option value="pending" disabled class="opacity-50">{{ __('Pending') }}</option>
-                    <option value="published" disabled class="opacity-50">{{ __('Published') }}</option>
-                </select>
-                @error('status') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-            </div> --}}
+            <!-- Banner & Video Description -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label for="banner" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                        {{ __('Banner') }}
+                    </label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        id="banner"
+                        wire:model="banner"
+                        class="mt-2 block w-full rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 p-2 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                    >
+                    @error('banner') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                    <!-- Banner preview -->
+                    @if ($banner)
+                        <div class="mt-2">
+                            <p class="text-sm text-zinc-600 dark:text-zinc-400">{{ __('Preview:') }}</p>
+                            <img src="{{ $banner->temporaryUrl() }}" alt="{{ __('Banner Preview') }}" class="mt-1 h-12 w-12 rounded-lg border border-zinc-300 dark:border-zinc-600">
+                        </div>
+                    @endif
+                </div>
+
+                <div>
+                    <label for="video" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                        {{ __('Video') }}
+                    </label>
+                    <input
+                        type="file"
+                        accept="video/*"
+                        id="video"
+                        wire:model="video"
+                        class="mt-2 block w-full rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 p-2 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                    >
+                    @error('video') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                    <!-- Video Preview -->
+                    @if ($video)
+                        <div class="mt-2">
+                            <p class="text-sm text-zinc-600 dark:text-zinc-400">{{ __('Preview:') }}</p>
+                            <video src="{{ $video->temporaryUrl() }}" alt="{{ __('Video Preview') }}" class="mt-1 rounded-lg border border-zinc-300 dark:border-zinc-600" controls></video>
+                        </div>
+                    @endif
+                </div>
+            </div>
 
             <!-- Submit -->
             <div class="flex justify-end">
