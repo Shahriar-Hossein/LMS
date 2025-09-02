@@ -31,12 +31,30 @@ class Course extends Model
         'published_at',
     ];
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $guarded = ['id'];
+
     protected function casts(): array
     {
         return [
-            'published_at' => 'datetime',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'id'            => 'integer',
+            'instructor_id' => 'integer',
+            'category_id'   => 'integer',
+            'title'         => 'string',
+            'slug'          => 'string',
+            'price'         => 'integer',
+            'discount'      => 'integer',
+            'status'        => 'string',
+            'description'   => 'string',
+            'banner_path'   => 'string',
+            'video_path'    => 'string',
+            'published_at'  => 'datetime',
+            'created_at'    => 'datetime',
+            'updated_at'    => 'datetime',
         ];
     }
 
@@ -58,7 +76,7 @@ class Course extends Model
 
         static::creating(fn ($course) => static::setSlug($course));
         // only change slug if title was updated.
-        static::updating(fn ($course) => $course->isDirty('title') && static::setSlug($course));
+        static::updating(fn ($course) => $course->isDirty('title') ? static::setSlug($course) : null);
     }
 
     /**

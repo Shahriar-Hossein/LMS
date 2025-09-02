@@ -99,7 +99,7 @@
                     @if ($banner)
                         <div class="mt-2">
                             <p class="text-sm text-zinc-600 dark:text-zinc-400">{{ __('Preview:') }}</p>
-                            <img src="{{ $banner->temporaryUrl() }}" alt="{{ __('Banner Preview') }}" class="mt-1 h-12 w-12 rounded-lg border border-zinc-300 dark:border-zinc-600">
+                            <img src="{{ $banner->temporaryUrl() }}" alt="{{ __('Banner Preview') }}" class="mt-1 h-32 w-32 rounded-lg border border-zinc-300 dark:border-zinc-600">
                         </div>
                     @endif
                 </div>
@@ -127,7 +127,15 @@
             </div>
 
             <!-- Submit -->
-            <div class="flex justify-end">
+            <div class="flex justify-end gap-3">
+                <!-- Cancel / Back -->
+                <a href="{{ route('instructor.courses.index') }}"
+                class="inline-flex items-center px-5 py-2.5 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition">
+                    <x-icon name="arrow-left" class="w-5 h-5 mr-2" />
+                    {{ __('Cancel') }}
+                </a>
+
+                {{-- Submit button --}}
                 <button
                     type="submit"
                     class="inline-flex items-center px-5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 transition disabled:opacity-50"

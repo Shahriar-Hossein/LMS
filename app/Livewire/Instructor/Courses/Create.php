@@ -31,12 +31,18 @@ class Create extends BaseComponent
             'price' => ['required', 'integer', 'min:0'],
             'discount' => ['nullable', 'integer', 'min:0', 'max:100'],
             'category_id' => ['nullable', Rule::exists('categories', 'id')],
-            'banner' => ['nullable', 'image', 'max:2048'],
+            'banner' => ['nullable', 'image', 'max:5120'],
             'video' => ['nullable', 'mimes:mp4,avi,mov,mkv', 'max:51200'],
         ]);
 
-        $bannerPath = $this->banner ? $this->banner->store('courses/banners', 'public') : null;
-        $videoPath = $this->video ? $this->video->store('courses/videos', 'public') : null;
+        $bannerPath =
+            $this->banner
+                ? $this->banner->store('courses/banners', 'public')
+                : null;
+        $videoPath =
+            $this->video
+                ? $this->video->store('courses/videos', 'public')
+                : null;
 
         $course = Course::create([
             'title' => $this->title,
