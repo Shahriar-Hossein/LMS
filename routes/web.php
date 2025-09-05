@@ -8,6 +8,8 @@ use App\Livewire\Instructor\Dashboard as InstructorDashboard;
 use App\Livewire\Instructor\Courses\Index as InstructorCourseIndex;
 use App\Livewire\Instructor\Courses\Create as InstructorCourseCreate;
 use App\Livewire\Instructor\Courses\Edit as InstructorCourseEdit;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +17,14 @@ use App\Livewire\Instructor\Courses\Edit as InstructorCourseEdit;
 |--------------------------------------------------------------------------
 */
 
+// =========================
 // Public routes
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-
+// =========================
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::prefix('courses')->name('courses.')->group(function () {
+    Route::get('/', [CourseController::class, 'index'])->name('index');
+    Route::get('/{course}', [CourseController::class, 'show'])->name('show');
+});
 
 // ==========================
 // Admin Routes (later)

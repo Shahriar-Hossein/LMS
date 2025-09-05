@@ -58,13 +58,34 @@ class Course extends Model
         ];
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     // get published courses
     public function scopePublished($query) {
         return $query->where('status', 'published');
     }
 
+    /**
+     * Set unique slug for the course.
+     * - Use title if unique
+     * - Append ID if there's a conflict
+     */
     public static function setSlug ($course) {
-        $course->slug = Str::slug($course->title);
+        $slug = Str::slug($course->title);
+
+        if (
+            static::where('slug', $slug)
+                ->when( $course->exists,
+                    fn($q) => $q->where('id', '<>', $course->id)
+                )->exists()
+        ) {
+            $slug .= '-' . $course->id;
+        }
+
+        $course->slug = $slug;
     }
 
     // automatically create slug from title
@@ -74,7 +95,10 @@ class Course extends Model
         // Globally add for all query.
         // static::addGlobalScope(new \App\Models\Scopes\ActiveScope);
 
-        static::creating(fn ($course) => static::setSlug($course));
+        static::created(function ($course) {
+            static::setSlug($course);
+            $course->save();
+        });
         // only change slug if title was updated.
         static::updating(fn ($course) => $course->isDirty('title') ? static::setSlug($course) : null);
     }
