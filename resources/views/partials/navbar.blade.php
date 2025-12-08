@@ -1,4 +1,4 @@
-<nav class="relative flex w-full flex-wrap items-center justify-between py-3 shadow-md bg-gradient-to-r from-emerald-300 via-cyan-200 to-emerald-200 dark:bg-gradient-to-r dark:from-zinc-800 dark:via-zinc-900 dark:to-zinc-800 dark:text-white">
+<nav class="z-10 sticky top-0 flex w-full flex-wrap items-center justify-between py-3 shadow-md bg-gradient-to-r from-emerald-300 via-cyan-200 to-emerald-200 dark:bg-gradient-to-r dark:from-zinc-800 dark:via-zinc-900 dark:to-zinc-800 dark:text-white">
   <div class="flex w-full flex-wrap items-center justify-between px-6">
 
     <!-- Logo -->
