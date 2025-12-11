@@ -7,12 +7,12 @@ Supports instructor course creation, file uploads (images/videos), and student c
 
 ## 🛠 Requirements
 
-- PHP ≥ 8.2  
-- Laravel ≥ 10  
-- Composer  
-- Node.js + npm (for compiling frontend assets)  
-- MySQL / MariaDB (or any supported DB)  
-- Storage link configured: `php artisan storage:link`  
+- PHP ≥ 8.2
+- Laravel ≥ 12
+- Composer
+- Node.js + npm (for compiling frontend assets)
+- MySQL / MariaDB (or any supported DB)
+- Storage link configured: `php artisan storage:link`
 
 ---
 
