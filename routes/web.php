@@ -4,12 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
+use App\Livewire\Instructor\Settings\Profile as InstructorProfile;
+// use App\Livewire\Instructor\Settings
 use App\Livewire\Instructor\Dashboard as InstructorDashboard;
 use App\Livewire\Instructor\Courses\Index as InstructorCourseIndex;
 use App\Livewire\Instructor\Courses\Create as InstructorCourseCreate;
 use App\Livewire\Instructor\Courses\Edit as InstructorCourseEdit;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourseController;
+use App\Livewire\Instructor\Students\Index as InstructorStudentIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +49,14 @@ Route::middleware(['auth', 'role:instructor'])
             Route::get('/', InstructorCourseIndex::class)->name('index');
             Route::get('/create', InstructorCourseCreate::class)->name('create');
             Route::get('/{course}/edit', InstructorCourseEdit::class)->name('edit');
+        });
+        Route::prefix('students')->name('students.')->group(function () {
+            Route::get('/', InstructorStudentIndex::class)->name('index');
+        });
+        Route::prefix('settings')->name('settings.')->group(function () {
+            Route::get('/', InstructorProfile::class)->name('profile');
+            // Route::get('/password', Password::class)->name('password');
+            // Route::get('/appearance', Appearance::class)->name('appearance');
         });
     });
 

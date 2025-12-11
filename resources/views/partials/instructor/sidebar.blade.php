@@ -21,19 +21,15 @@
                   hover:bg-emerald-50 dark:hover:bg-zinc-800">
             Courses
         </a>
-        <a
-        href="#"
-        {{-- href="{{ route('instructor.students.index') }}" --}}
-           class="block px-3 py-2 rounded-md text-sm font-medium text-emerald-700 dark:text-emerald-300
+        <a href="{{ route('instructor.students.index') }}"
+            class="block px-3 py-2 rounded-md text-sm font-medium text-emerald-700 dark:text-emerald-300
                   hover:bg-emerald-50 dark:hover:bg-zinc-800">
             Students
         </a>
-        <a
-        href="#"
-        {{-- href="{{ route('instructor.settings') }}" --}}
+        <a href="{{ route('instructor.settings.profile') }}"
            class="block px-3 py-2 rounded-md text-sm font-medium text-emerald-700 dark:text-emerald-300
                   hover:bg-emerald-50 dark:hover:bg-zinc-800">
-            Settings
+            Profile
         </a>
     </nav>
 </aside>
