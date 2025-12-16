@@ -17,25 +17,25 @@
     @if ($courses->count())
         <div class="overflow-x-auto rounded-lg shadow">
             <table class="min-w-full text-sm text-left border border-gray-200 dark:border-gray-700">
-                <thead class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200">
-                    <tr>
+                <thead class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-center">
+                    <tr class="">
                         <th class="p-3 font-semibold">SL</th>
                         <th class="p-3 font-semibold">Title</th>
                         <th class="p-3 font-semibold">Category</th>
                         <th class="p-3 font-semibold">Status</th>
                         <th class="p-3 font-semibold">Price(TK)</th>
                         <th class="p-3 font-semibold">Discount</th>
-                        <th class="p-3 font-semibold">Enrolled Students</th>
+                        <th class="p-3 font-semibold">Enrolled</th>
                         <th class="p-3 font-semibold">Revenue(TK)</th>
                         <th class="p-3 font-semibold">Created At</th>
                         <th class="p-3 text-right font-semibold">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+                <tbody class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 text-center">
                     @foreach ($courses as $index => $course)
                         <tr class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
                             <td class="p-3">{{ $index + 1 }}</td>
-                            <td class="p-3 inline-flex items-center space-x-1">
+                            <td class="p-3 flex items-center space-x-2">
                                 {{-- small course image --}}
                                 <img
                                     src="{{ asset('storage/' . $course->banner_path) }}"
@@ -53,7 +53,7 @@
                                     {{ ucfirst($course->status) }}
                                 </span>
                             </td>
-                            <td class="p-3 inline-flex self-align-end w-[100%] justify-end pr-0 sm:pr-2 md:pr-10">
+                            <td class="p-3 inline-flex text-end w-full justify-end">
                                 {{ $course->price }}
                                 <svg
                                     class="self-center h-3 w-3 fill-emerald-300 ml-1"
@@ -64,14 +64,16 @@
                                         <path d="M36 32.3C18.4 30.1 2.4 42.5 .3 60S10.5 93.6 28 95.8l7.9 1c16 2 28 15.6 28 31.8l0 31.5-40 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l40 0 0 176c0 53 43 96 96 96l32 0c106 0 192-86 192-192l0-32c0-53-43-96-96-96l-16 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l16 0c17.7 0 32 14.3 32 32l0 32c0 70.7-57.3 128-128 128l-32 0c-17.7 0-32-14.3-32-32l0-176 40 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-40 0 0-31.5C128 80.1 92 39.2 43.9 33.2l-7.9-1z"/>
                                 </svg>
                             </td>
-                            <td class="p-3 text-end pr-0 sm:pr-2 md:pr-10">
+                            <td class="p-3 text-end">
                                 {{ $course->discount }}%
                             </td>
-                            <td class="p-3">Coming Soon</td>
+                            <td class="p-3 text-end">
+                                {{ rand(0, 10000) }}
+                            </td>
                             <td
-                                class="p-3 inline-flex self-align-end w-[100%] justify-end pr-0 sm:pr-2 md:pr-10"
+                                class="p-3 inline-flex text-end w-full justify-end"
                             >
-                                0
+                                {{ rand(0, 100000) }}
                                 <svg
                                     class="self-center h-3 w-3 fill-emerald-300 ml-1"
                                     xmlns="http://www.w3.org/2000/svg"

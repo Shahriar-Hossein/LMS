@@ -16,6 +16,7 @@ class Index extends BaseComponent
         //     $query->where('instructor_id', auth()->user()->id);
         // })->get();
         // $this->students = User::where('role', 'student')->get();
+        $this->students = User::all();
     }
     public function render()
     {

@@ -61,9 +61,8 @@ class Profile extends BaseComponent
 
         $user->update($validated);
 
-        $this->dispatch('profile-updated'); 
-        // Or if you use a toaster:
-        // $this->dispatch('notify', 'Profile updated successfully!');
+        $this->dispatch('notify', 'Profile updated successfully!');
+        session()->flash('message', 'Profile updated successfully.');
     }
 
     public function render()
