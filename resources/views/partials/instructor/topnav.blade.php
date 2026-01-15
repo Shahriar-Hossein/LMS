@@ -10,7 +10,13 @@
         <span class="text-sm text-gray-700 dark:text-gray-300">
             Hello, {{ auth()->user()->name }}
         </span>
-        <img src="{{ asset('storage/' . auth()->user()->image_path) }}"
-             alt="Avatar" class="w-9 h-9 rounded-full border-2 border-emerald-500">
+        <img 
+            src="{{
+                auth()->user()->image_path
+                    ? asset('storage/' . auth()->user()->image_path)
+                    : 'https://ui-avatars.com/api/?name=' . auth()->user()->name . '&background=14A248&color=fff' }}"
+            alt="Avatar"
+            class="w-9 h-9 rounded-full border-2 border-emerald-500"
+        >
     </div>
 </header>
