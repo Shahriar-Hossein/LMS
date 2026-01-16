@@ -172,4 +172,8 @@
             </div>
         </form>
     </div>
+    
+    <div class="mt-6">
+        @livewire('instructor.courses.modules-manager', ['course' => $course])
+    </div>
 </div>

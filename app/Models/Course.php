@@ -71,18 +71,20 @@ class Course extends Model
     /**
      * Set unique slug for the course.
      * - Use title if unique
-     * - Append ID if there's a conflict
+     * - Append incremental counter if there's a conflict
      */
     public static function setSlug ($course) {
-        $slug = Str::slug($course->title);
+        $base = Str::slug($course->title);
+        $slug = $base;
+        $counter = 1;
 
-        if (
+        while (
             static::where('slug', $slug)
-                ->when( $course->exists,
-                    fn($q) => $q->where('id', '<>', $course->id)
-                )->exists()
+                ->when($course->exists, fn($q) => $q->where('id', '<>', $course->id))
+                ->exists()
         ) {
-            $slug .= '-' . $course->id;
+            $slug = $base . '-' . $counter;
+            $counter++;
         }
 
         $course->slug = $slug;
@@ -95,11 +97,12 @@ class Course extends Model
         // Globally add for all query.
         // static::addGlobalScope(new \App\Models\Scopes\ActiveScope);
 
-        static::created(function ($course) {
+        // Generate slug before the model is created so `slug` exists on insert
+        static::creating(function ($course) {
             static::setSlug($course);
-            $course->save();
         });
-        // only change slug if title was updated.
+
+        // Only change slug if title was updated (run before update so slug is saved)
         static::updating(fn ($course) => $course->isDirty('title') ? static::setSlug($course) : null);
     }
 
@@ -121,5 +124,13 @@ class Course extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Get the modules for the course
+     */
+    public function modules()
+    {
+        return $this->hasMany(\App\Models\Module::class)->orderBy('position');
     }
 }
