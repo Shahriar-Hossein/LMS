@@ -16,6 +16,9 @@ use App\Livewire\Instructor\Students\Index as InstructorStudentIndex;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\Students\Index as AdminStudentIndex;
 use App\Livewire\Admin\Instructors\Index as AdminInstructorIndex;
+use App\Livewire\Admin\Courses\Index as AdminCourseIndex;
+use App\Livewire\Admin\Categories\Index as AdminCategoryIndex;
+use App\Livewire\Admin\Settings\Profile as AdminSettingsProfile;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +43,15 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
         Route::get('/dashboard', AdminDashboard::class)->name('dashboard');
+        Route::prefix('courses')->name('courses.')->group(function () {
+            Route::get('/', AdminCourseIndex::class)->name('index');
+        });
+        Route::prefix('categories')->name('categories.')->group(function () {
+            Route::get('/', AdminCategoryIndex::class)->name('index');
+        });
+        Route::prefix('settings')->name('settings.')->group(function () {
+            Route::get('/', AdminSettingsProfile::class)->name('profile');
+        });
         Route::prefix('students')->name('students.')->group(function () {
             Route::get('/', AdminStudentIndex::class)->name('index');
         });

@@ -9,11 +9,11 @@
              dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 flex">
 
     {{-- Sidebar --}}
-    @include('partials.instructor.sidebar')
+    @include('partials.admin.sidebar')
 
     <!-- Main Content -->
     <div class="flex-1 flex flex-col">
-        @include('partials.instructor.topnav')
+        @include('partials.admin.topnav')
 
         <main class="flex-1 p-6">
             {{ $slot }}
