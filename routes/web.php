@@ -13,6 +13,9 @@ use App\Livewire\Instructor\Courses\Edit as InstructorCourseEdit;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourseController;
 use App\Livewire\Instructor\Students\Index as InstructorStudentIndex;
+use App\Livewire\Admin\Dashboard as AdminDashboard;
+use App\Livewire\Admin\Students\Index as AdminStudentIndex;
+use App\Livewire\Admin\Instructors\Index as AdminInstructorIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,8 +33,21 @@ Route::prefix('courses')->name('courses.')->group(function () {
 });
 
 // ==========================
-// Admin Routes (later)
+// Admin Routes
 // ==========================
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/dashboard', AdminDashboard::class)->name('dashboard');
+        Route::prefix('students')->name('students.')->group(function () {
+            Route::get('/', AdminStudentIndex::class)->name('index');
+        });
+        Route::prefix('instructors')->name('instructors.')->group(function () {
+            Route::get('/', AdminInstructorIndex::class)->name('index');
+        });
+    });
+
 
 
 // ==========================
@@ -64,6 +80,12 @@ Route::middleware(['auth', 'role:instructor'])
 // ==========================
 // Student Routes (later)
 // ==========================
+Route::middleware(['auth', 'role:student'])
+    ->prefix('student')
+    ->name('student.')
+    ->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\StudentDashboardController::class, 'index'])->name('dashboard');
+    });
 
 
 // ==========================

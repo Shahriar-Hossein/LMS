@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -65,5 +66,81 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    /**
+     * Courses the user is enrolled in (many-to-many pivot expected)
+     */
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class)->withTimestamps();
+    }
+
+    public function enrolledCount(): int
+    {
+        return $this->courses()->count();
+    }
+
+    /**
+     * Estimate total spent. If there's a `price_paid` pivot column it will be used by consumer
+     * otherwise sum course prices as a fallback.
+     */
+    public function totalSpent(): int
+    {
+        // try to sum price_paid from pivot when loaded
+        $courses = $this->courses()->get();
+        if ($courses->isEmpty()) {
+            return 0;
+        }
+
+        // if pivot has price_paid use that; otherwise sum course price
+        $sum = 0;
+        foreach ($courses as $c) {
+            if (isset($c->pivot) && isset($c->pivot->price_paid)) {
+                $sum += (int) $c->pivot->price_paid;
+            } else {
+                $sum += (int) ($c->price ?? 0);
+            }
+        }
+
+        return $sum;
+    }
+
+    /**
+     * Average progress across enrolled courses.
+     * Expects an optional `progress` pivot value (0-100). Falls back to 0.
+     */
+    public function overallProgress(): float
+    {
+        $courses = $this->courses()->get();
+        if ($courses->isEmpty()) {
+            return 0;
+        }
+
+        $sum = 0;
+        $count = 0;
+        foreach ($courses as $c) {
+            $count++;
+            $sum += isset($c->pivot) && isset($c->pivot->progress) ? (float) $c->pivot->progress : 0;
+        }
+
+        return $count ? round($sum / $count, 2) : 0;
+    }
+
+    public function completedCoursesCount(): int
+    {
+        $courses = $this->courses()->get();
+        if ($courses->isEmpty()) {
+            return 0;
+        }
+
+        $completed = 0;
+        foreach ($courses as $c) {
+            if (isset($c->pivot) && ! empty($c->pivot->completed_at)) {
+                $completed++;
+            }
+        }
+
+        return $completed;
     }
 }
