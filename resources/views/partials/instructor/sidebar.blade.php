@@ -32,4 +32,16 @@
             Profile
         </a>
     </nav>
+    
+    <!-- Logout (bottom) -->
+    <div class="p-4 border-t border-emerald-100 dark:border-zinc-700 mt-auto">
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit"
+                    class="w-full text-left px-3 py-2 rounded-md text-sm font-medium text-red-600 dark:text-red-400
+                           hover:bg-red-50 dark:hover:bg-zinc-800 cursor-pointer">
+                Logout
+            </button>
+        </form>
+    </div>
 </aside>
