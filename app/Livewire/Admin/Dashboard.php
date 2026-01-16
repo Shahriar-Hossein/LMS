@@ -6,8 +6,9 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Assignment;
+use App\Livewire\Admin\BaseComponent;
 
-class Dashboard extends Component
+class Dashboard extends BaseComponent
 {
     public int $students = 0;
     public int $instructors = 0;

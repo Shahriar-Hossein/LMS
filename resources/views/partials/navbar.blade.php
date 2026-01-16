@@ -1,6 +1,20 @@
 <nav class="z-10 sticky top-0 flex w-full flex-wrap items-center justify-between py-3 shadow-md bg-gradient-to-r from-emerald-300 via-cyan-200 to-emerald-200 dark:bg-gradient-to-r dark:from-zinc-800 dark:via-zinc-900 dark:to-zinc-800 dark:text-white">
   <div class="flex w-full flex-wrap items-center justify-between px-6">
-
+    
+    @auth
+      @php
+        $role = auth()->user()->role ?? null;
+        if ($role === 'admin') {
+          $dashboardRoute = 'admin.dashboard';
+        } elseif ($role === 'instructor') {
+          $dashboardRoute = 'instructor.dashboard';
+        } elseif ($role === 'student') {
+          $dashboardRoute = 'student.dashboard';
+        } else {
+          $dashboardRoute = 'home';
+        }
+      @endphp
+    @endauth
     <!-- Logo -->
     <div>
       <a href="{{ route('home') }}" class="flex items-center space-x-2">
@@ -42,7 +56,7 @@
         </a>
       @else
         <!-- Dashboard Link -->
-        <a href="{{ route(auth()->user()->role === 'instructor' ? 'instructor.dashboard' : 'instructor.dashboard') }}"
+        <a href="{{ route($dashboardRoute) }}"
            class="text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 transition font-medium text-sm">
           Dashboard
         </a>
@@ -92,7 +106,7 @@
         Join For Free
       </a>
     @else
-      <a href="{{ route(auth()->user()->role === 'instructor' ? 'instructor.dashboard' : 'instructor.dashboard') }}"
+      <a href="{{ route($dashboardRoute) }}"
          class="text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 transition px-4 py-2 rounded-md text-sm text-center">
         Dashboard
       </a>

@@ -5,8 +5,9 @@ namespace App\Livewire\Admin\Students;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\User;
+use App\Livewire\Admin\BaseComponent;
 
-class Index extends Component
+class Index extends BaseComponent
 {
     use WithPagination;
 
