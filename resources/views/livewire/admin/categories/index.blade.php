@@ -17,10 +17,10 @@
     @if($showCreate)
         <div class="mb-4">
             <div class="min-h-[72px] flex flex-col justify-center">
-                <div class="flex gap-2">
+                    <div class="flex gap-2">
                     <input type="text" wire:model.defer="newName" placeholder="Category name" class="px-3 py-2 rounded border w-full">
-                    <button wire:click.prevent="create" class="px-3 py-2 bg-emerald-600 text-white rounded">Save</button>
-                    <button wire:click.prevent="toggleCreate" class="px-3 py-2 border rounded">Cancel</button>
+                    <x-admin.action-button wire:click.prevent="create" variant="primary">Save</x-admin.action-button>
+                    <x-admin.action-button wire:click.prevent="toggleCreate">Cancel</x-admin.action-button>
                 </div>
                 <div class="mt-2">
                     @error('newName') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
@@ -45,8 +45,8 @@
                         @if($editingId === $category->id)
                             <div class="flex items-center gap-2">
                                 <input type="text" wire:model.defer="editingName" class="px-2 py-1 border rounded w-full">
-                                <button wire:click.prevent="update" class="px-2 py-1 bg-emerald-600 text-white rounded">Save</button>
-                                <button wire:click.prevent="cancelEdit" class="px-2 py-1 border rounded">Cancel</button>
+                                <x-admin.action-button wire:click.prevent="update" variant="primary">Save</x-admin.action-button>
+                                <x-admin.action-button wire:click.prevent="cancelEdit">Cancel</x-admin.action-button>
                             </div>
                             @error('editingName') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                         @else
@@ -56,8 +56,8 @@
                     <td class="p-3">{{ $category->created_at->format('Y-m-d') }}</td>
                     <td class="p-3">
                         @if($editingId !== $category->id)
-                            <button wire:click.prevent="edit({{ $category->id }})" class="px-2 py-1 mr-2 border rounded">Edit</button>
-                            <button onclick="return confirm('Delete this category?') || event.stopImmediatePropagation()" wire:click.prevent="delete({{ $category->id }})" class="px-2 py-1 border rounded text-red-600">Delete</button>
+                            <x-admin.action-button wire:click.prevent="edit({{ $category->id }})" variant="info" class="mr-2">Edit</x-admin.action-button>
+                            <x-admin.action-button variant="danger" onclick="return confirm('Delete this category?') || event.stopImmediatePropagation()" wire:click.prevent="delete({{ $category->id }})">Delete</x-admin.action-button>
                         @endif
                     </td>
                 </tr>
