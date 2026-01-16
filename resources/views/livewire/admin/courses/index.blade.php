@@ -5,30 +5,30 @@
     </div>
 
     <div class="overflow-x-auto bg-white/80 dark:bg-zinc-900/80 rounded-lg shadow-sm">
-        <table class="w-full text-sm">
-            <thead class="text-left text-xs text-gray-600 dark:text-gray-300 uppercase">
+        <x-admin-table>
+            <x-slot name="header">
                 <tr>
-                    <th class="px-4 py-2">Title</th>
-                    <th class="px-4 py-2">Category</th>
-                    <th class="px-4 py-2">Instructor</th>
-                    <th class="px-4 py-2">Created</th>
+                    <th class="p-3 font-semibold">Title</th>
+                    <th class="p-3 font-semibold">Category</th>
+                    <th class="p-3 font-semibold">Instructor</th>
+                    <th class="p-3 font-semibold">Created</th>
                 </tr>
-            </thead>
-            <tbody>
+            </x-slot>
+
             @forelse($courses as $course)
-                <tr class="border-t">
-                    <td class="px-4 py-3">{{ $course->title }}</td>
-                    <td class="px-4 py-3">{{ $course->category?->name ?? '-' }}</td>
-                    <td class="px-4 py-3">{{ $course->instructor?->name ?? '-' }}</td>
-                    <td class="px-4 py-3">{{ $course->created_at->format('Y-m-d') }}</td>
+                <tr class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <td class="p-3">{{ $course->title }}</td>
+                    <td class="p-3">{{ $course->category?->name ?? '-' }}</td>
+                    <td class="p-3">{{ $course->instructor?->name ?? '-' }}</td>
+                    <td class="p-3">{{ $course->created_at->format('Y-m-d') }}</td>
                 </tr>
             @empty
                 <tr>
                     <td colspan="4" class="p-4 text-center text-sm text-gray-500">No courses found.</td>
                 </tr>
             @endforelse
-            </tbody>
-        </table>
+
+        </x-admin-table>
     </div>
 
     <div class="mt-4">

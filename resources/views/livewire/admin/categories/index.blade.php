@@ -20,18 +20,18 @@
     @endif
 
     <div class="overflow-x-auto bg-white/80 dark:bg-zinc-900/80 rounded-lg shadow-sm">
-        <table class="w-full text-sm">
-            <thead class="text-left text-xs text-gray-600 dark:text-gray-300 uppercase">
+        <x-admin-table>
+            <x-slot name="header">
                 <tr>
-                    <th class="px-4 py-2">Name</th>
-                    <th class="px-4 py-2">Created</th>
-                    <th class="px-4 py-2">Actions</th>
+                    <th class="p-3 font-semibold">Name</th>
+                    <th class="p-3 font-semibold">Created</th>
+                    <th class="p-3 font-semibold">Actions</th>
                 </tr>
-            </thead>
-            <tbody>
+            </x-slot>
+
             @forelse($categories as $category)
-                <tr class="border-t">
-                    <td class="px-4 py-3">
+                <tr class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <td class="p-3">
                         @if($editingId === $category->id)
                             <div class="flex items-center gap-2">
                                 <input type="text" wire:model.defer="editingName" class="px-2 py-1 border rounded w-full">
@@ -43,8 +43,8 @@
                             {{ $category->name }}
                         @endif
                     </td>
-                    <td class="px-4 py-3">{{ $category->created_at->format('Y-m-d') }}</td>
-                    <td class="px-4 py-3">
+                    <td class="p-3">{{ $category->created_at->format('Y-m-d') }}</td>
+                    <td class="p-3">
                         @if($editingId !== $category->id)
                             <button wire:click.prevent="edit({{ $category->id }})" class="px-2 py-1 mr-2 border rounded">Edit</button>
                             <button onclick="return confirm('Delete this category?') || event.stopImmediatePropagation()" wire:click.prevent="delete({{ $category->id }})" class="px-2 py-1 border rounded text-red-600">Delete</button>
@@ -56,8 +56,8 @@
                     <td colspan="3" class="p-4 text-center text-sm text-gray-500">No categories found.</td>
                 </tr>
             @endforelse
-            </tbody>
-        </table>
+
+        </x-admin-table>
     </div>
 
     <div class="mt-4">

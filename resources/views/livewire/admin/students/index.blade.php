@@ -5,28 +5,28 @@
     </div>
 
     <div class="overflow-x-auto bg-white/80 dark:bg-zinc-900/80 rounded-lg shadow-sm">
-        <table class="w-full text-sm">
-            <thead class="text-left text-xs text-gray-600 dark:text-gray-300 uppercase">
+        <x-admin-table>
+            <x-slot name="header">
                 <tr>
-                    <th class="px-4 py-2">Name</th>
-                    <th class="px-4 py-2">Email</th>
-                    <th class="px-4 py-2">Joined</th>
+                    <th class="p-3 font-semibold">Name</th>
+                    <th class="p-3 font-semibold">Email</th>
+                    <th class="p-3 font-semibold">Joined</th>
                 </tr>
-            </thead>
-            <tbody>
+            </x-slot>
+
             @forelse($students as $student)
-                <tr class="border-t">
-                    <td class="px-4 py-3">{{ $student->name }}</td>
-                    <td class="px-4 py-3">{{ $student->email }}</td>
-                    <td class="px-4 py-3">{{ $student->created_at->format('Y-m-d') }}</td>
+                <tr class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <td class="p-3">{{ $student->name }}</td>
+                    <td class="p-3">{{ $student->email }}</td>
+                    <td class="p-3">{{ $student->created_at->format('Y-m-d') }}</td>
                 </tr>
             @empty
                 <tr>
                     <td colspan="3" class="p-4 text-center text-sm text-gray-500">No students found.</td>
                 </tr>
             @endforelse
-            </tbody>
-        </table>
+
+        </x-admin-table>
     </div>
 
     <div class="mt-4">
