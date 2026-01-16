@@ -73,7 +73,8 @@ class User extends Authenticatable
      */
     public function courses(): BelongsToMany
     {
-        return $this->belongsToMany(Course::class)->withTimestamps();
+        // explicit pivot table name for clarity (course_student)
+        return $this->belongsToMany(Course::class, 'course_student')->withTimestamps();
     }
 
     public function enrolledCount(): int
