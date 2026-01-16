@@ -8,14 +8,24 @@
         </div>
     </div>
 
+        @if($successMessage)
+            <div class="mb-4">
+                <p class="text-sm text-green-600">{{ $successMessage }}</p>
+            </div>
+        @endif
+
     @if($showCreate)
         <div class="mb-4">
-            <div class="flex gap-2">
-                <input type="text" wire:model.defer="newName" placeholder="Category name" class="px-3 py-2 rounded border w-full">
-                <button wire:click.prevent="create" class="px-3 py-2 bg-emerald-600 text-white rounded">Save</button>
-                <button wire:click.prevent="toggleCreate" class="px-3 py-2 border rounded">Cancel</button>
+            <div class="min-h-[72px] flex flex-col justify-center">
+                <div class="flex gap-2">
+                    <input type="text" wire:model.defer="newName" placeholder="Category name" class="px-3 py-2 rounded border w-full">
+                    <button wire:click.prevent="create" class="px-3 py-2 bg-emerald-600 text-white rounded">Save</button>
+                    <button wire:click.prevent="toggleCreate" class="px-3 py-2 border rounded">Cancel</button>
+                </div>
+                <div class="mt-2">
+                    @error('newName') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
+                </div>
             </div>
-            @error('newName') <p class="text-sm text-red-600 mt-2">{{ $message }}</p> @enderror
         </div>
     @endif
 

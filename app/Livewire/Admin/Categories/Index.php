@@ -16,11 +16,11 @@ class Index extends BaseComponent
     public $newName = '';
     public $editingId = null;
     public $editingName = '';
+    public $successMessage = '';
 
     protected $queryString = ['search'];
 
     protected $rules = [
-        'newName' => 'required|string|max:255',
         'editingName' => 'required|string|max:255',
     ];
 
@@ -34,17 +34,21 @@ class Index extends BaseComponent
         $this->showCreate = ! $this->showCreate;
         if (! $this->showCreate) {
             $this->newName = '';
+            $this->successMessage = '';
         }
     }
 
     public function create()
     {
-        $this->validateOnly('newName');
+        $this->validateOnly('newName', [
+            'newName' => 'required|string|max:255|unique:categories,name',
+        ]);
 
         Category::create(['name' => $this->newName]);
 
         $this->newName = '';
         $this->showCreate = false;
+        $this->successMessage = 'Category was created.';
     }
 
     public function edit($id)
@@ -62,12 +66,15 @@ class Index extends BaseComponent
 
     public function update()
     {
-        $this->validateOnly('editingName');
+        $this->validateOnly('editingName', [
+            'editingName' => "required|string|max:255|unique:categories,name,{$this->editingId}",
+        ]);
 
         $cat = Category::findOrFail($this->editingId);
         $cat->update(['name' => $this->editingName]);
 
         $this->cancelEdit();
+        $this->successMessage = 'Category was updated.';
     }
 
     public function delete($id)
