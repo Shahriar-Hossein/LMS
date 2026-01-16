@@ -96,7 +96,8 @@ Route::middleware(['auth', 'role:student'])
     ->prefix('student')
     ->name('student.')
     ->group(function () {
-        Route::get('/dashboard', [\App\Http\Controllers\StudentDashboardController::class, 'index'])->name('dashboard');
+        // Use Livewire student dashboard component instead of the old controller
+        Route::get('/dashboard', \App\Livewire\Student\Dashboard::class)->name('dashboard');
     });
 
 
