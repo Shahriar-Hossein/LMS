@@ -3,12 +3,12 @@
     
     @auth
       @php
-        $role = auth()->user()->role ?? null;
-        if ($role === 'admin') {
+        $user = auth()->user();
+        if ( $user->hasRole('admin')) {
           $dashboardRoute = 'admin.dashboard';
-        } elseif ($role === 'instructor') {
+        } elseif ($user->hasRole('instructor')) {
           $dashboardRoute = 'instructor.dashboard';
-        } elseif ($role === 'student') {
+        } elseif ($user->hasRole('student')) {
           $dashboardRoute = 'student.dashboard';
         } else {
           $dashboardRoute = 'home';
