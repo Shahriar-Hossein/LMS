@@ -1,7 +1,7 @@
 <div class="p-6">
     <div class="flex items-center justify-between mb-4">
         <h2 class="text-lg font-semibold text-emerald-700 dark:text-emerald-300">My Courses</h2>
-        <a href="{{ route('student.courses.all') }}" class="text-sm text-emerald-600 hover:underline">Browse all courses</a>
+        <a href="{{ route('courses.index') }}" class="text-sm text-emerald-600 hover:underline">Browse all courses</a>
     </div>
 
     @if($courses->isEmpty())

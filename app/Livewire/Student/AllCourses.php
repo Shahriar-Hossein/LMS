@@ -12,7 +12,7 @@ class AllCourses extends BaseComponent
     public function mount()
     {
         $this->courses = Course::published()->latest()->get();
-        $this->enrolled = auth()->user()->courses()->pluck('id')->toArray();
+        $this->enrolled = auth()->user()->courses()->pluck('courses.id')->toArray();
     }
 
     public function enroll($courseId)
