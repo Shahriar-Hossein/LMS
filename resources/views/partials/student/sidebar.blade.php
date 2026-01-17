@@ -16,7 +16,7 @@
                   hover:bg-emerald-50 dark:hover:bg-zinc-800">
             Dashboard
         </a>
-        <a href="{{ route('courses.index') }}"
+         <a href="{{ route('student.courses.index') }}"
            class="block px-3 py-2 rounded-md text-sm font-medium text-emerald-700 dark:text-emerald-300
                   hover:bg-emerald-50 dark:hover:bg-zinc-800">
             Courses
