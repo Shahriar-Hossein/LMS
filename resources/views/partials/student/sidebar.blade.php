@@ -2,10 +2,16 @@
               shadow-xl backdrop-blur-md h-screen flex flex-col">
 
     <!-- Branding -->
-    <div class="p-6 flex items-center justify-center border-b border-emerald-100 dark:border-zinc-700">
+    <div class="p-6 flex items-center justify-between border-b border-emerald-100 dark:border-zinc-700">
         <a href="{{ route('home') }}" class="flex flex-col items-center gap-2">
             <x-app-logo-icon class="size-10 text-emerald-600 dark:text-emerald-400" />
             <span class="font-semibold text-emerald-700 dark:text-emerald-300">Student</span>
+        </a>
+        <a href="{{ route('home') }}" title="Back to Home"
+           class="p-2 rounded-md text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-zinc-800">
+            <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
         </a>
     </div>
 
@@ -21,10 +27,15 @@
                   hover:bg-emerald-50 dark:hover:bg-zinc-800">
             Courses
         </a>
-        <a href="{{ route('settings.profile') }}"
+        <a href="{{ route('student.settings.profile') }}"
            class="block px-3 py-2 rounded-md text-sm font-medium text-emerald-700 dark:text-emerald-300
                   hover:bg-emerald-50 dark:hover:bg-zinc-800">
             Profile
+        </a>
+        <a href="{{ route('student.settings.password') }}"
+           class="block px-3 py-2 rounded-md text-sm font-medium text-emerald-700 dark:text-emerald-300
+                  hover:bg-emerald-50 dark:hover:bg-zinc-800">
+            Password
         </a>
     </nav>
     

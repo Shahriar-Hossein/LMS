@@ -5,6 +5,9 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Instructor\Settings\Profile as InstructorProfile;
+use App\Livewire\Instructor\Settings\Password as InstructorPassword;
+use App\Livewire\Student\Settings\Profile as StudentProfile;
+use App\Livewire\Student\Settings\Password as StudentPassword;
 // use App\Livewire\Instructor\Settings
 use App\Livewire\Instructor\Dashboard as InstructorDashboard;
 use App\Livewire\Instructor\Courses\Index as InstructorCourseIndex;
@@ -21,6 +24,7 @@ use App\Livewire\Admin\Instructors\Index as AdminInstructorIndex;
 use App\Livewire\Admin\Courses\Index as AdminCourseIndex;
 use App\Livewire\Admin\Categories\Index as AdminCategoryIndex;
 use App\Livewire\Admin\Settings\Profile as AdminSettingsProfile;
+use App\Livewire\Admin\Settings\Password as AdminPassword;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +63,7 @@ Route::middleware(['auth', 'role:admin'])
         });
         Route::prefix('settings')->name('settings.')->group(function () {
             Route::get('/', AdminSettingsProfile::class)->name('profile');
+            Route::get('/password', AdminPassword::class)->name('password');
         });
         Route::prefix('students')->name('students.')->group(function () {
             Route::get('/', AdminStudentIndex::class)->name('index');
@@ -91,8 +96,7 @@ Route::middleware(['auth', 'role:instructor'])
         });
         Route::prefix('settings')->name('settings.')->group(function () {
             Route::get('/', InstructorProfile::class)->name('profile');
-            // Route::get('/password', Password::class)->name('password');
-            // Route::get('/appearance', Appearance::class)->name('appearance');
+            Route::get('/password', InstructorPassword::class)->name('password');
         });
     });
 
@@ -117,6 +121,12 @@ Route::middleware(['auth', 'role:student'])
         // Student lessons
         Route::prefix('courses/{course}/lessons')->name('lessons.')->group(function () {
             Route::get('/{lesson}', \App\Livewire\Student\LessonView::class)->name('view');
+        });
+
+        // Student settings
+        Route::prefix('settings')->name('settings.')->group(function () {
+            Route::get('/', StudentProfile::class)->name('profile');
+            Route::get('/password', StudentPassword::class)->name('password');
         });
     });
 
