@@ -4,6 +4,7 @@ namespace App\Livewire\Student;
 
 use App\Models\Assignment;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends BaseComponent
 {
@@ -16,7 +17,7 @@ class Dashboard extends BaseComponent
 
     public function mount()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (! $user) {
             $this->courses = collect();

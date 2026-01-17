@@ -43,7 +43,7 @@
                                 <div class="text-sm text-gray-500">@if(isset($course->pivot) && isset($course->pivot->progress)) Progress: {{ $course->pivot->progress }}% @endif</div>
                             </div>
                             <div>
-                                <a href="{{ route('courses.show', $course) }}" class="text-cyan-600">Open</a>
+                                <a href="{{ route('student.courses.view', $course) }}" class="text-cyan-600">Open</a>
                             </div>
                         </li>
                     @endforeach

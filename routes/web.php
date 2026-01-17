@@ -111,6 +111,12 @@ Route::middleware(['auth', 'role:student'])
         Route::prefix('courses')->name('courses.')->group(function () {
             Route::get('/', \App\Livewire\Student\EnrolledCourses::class)->name('index');
             Route::get('/all', \App\Livewire\Student\AllCourses::class)->name('all');
+            Route::get('/{course}', \App\Livewire\Student\CourseView::class)->name('view');
+        });
+
+        // Student lessons
+        Route::prefix('courses/{course}/lessons')->name('lessons.')->group(function () {
+            Route::get('/{lesson}', \App\Livewire\Student\LessonView::class)->name('view');
         });
     });
 

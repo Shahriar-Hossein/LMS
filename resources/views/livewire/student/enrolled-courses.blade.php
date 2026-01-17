@@ -13,7 +13,7 @@
                     <img src="{{ $course->banner_path ? asset('storage/'.$course->banner_path) : asset('images/placeholder.png') }}"
                          alt="{{ $course->title }}" class="w-20 h-16 object-cover rounded">
                     <div class="flex-1">
-                        <a href="{{ route('courses.show', $course) }}" class="font-medium text-emerald-700 dark:text-emerald-300">{{ $course->title }}</a>
+                        <a href="{{ route('student.courses.view', $course) }}" class="font-medium text-emerald-700 dark:text-emerald-300">{{ $course->title }}</a>
                         <div class="text-sm text-zinc-600 dark:text-zinc-400">{{ \Illuminate\Support\Str::limit($course->description, 50) }}</div>
                     </div>
                 </li>
