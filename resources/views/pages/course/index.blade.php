@@ -26,12 +26,28 @@
 
 				<!-- Instructor Info -->
 				<div class="flex items-center gap-4">
-					<img src="{{ $course->instructor->profile_photo_path ?? asset('images/default-avatar.png') }}"
-						alt="{{ $course->instructor->name }}"
-						class="w-12 h-12 rounded-full object-cover">
+					@php
+						$instructor = $course->instructor ?? null;
+						$name = $instructor->name ?? '';
+						$initials = collect(explode(' ', $name))->filter()->map(function($part){ return strtoupper(mb_substr($part, 0, 1)); })->take(2)->implode('');
+						$colors = ['bg-emerald-500','bg-rose-500','bg-indigo-500','bg-yellow-500','bg-pink-500','bg-blue-500','bg-violet-500','bg-sky-500','bg-lime-600'];
+						$seed = isset($instructor->id) ? crc32($instructor->id) : crc32($name);
+						$color = $colors[$seed % count($colors)];
+					@endphp
+
+					@if(!empty($instructor->profile_photo_path))
+						<img src="{{ asset('storage/' . $instructor->profile_photo_path) }}"
+							alt="{{ $instructor->name }}"
+							class="w-12 h-12 rounded-full object-cover">
+					@else
+						<div class="w-12 h-12 rounded-full {{ $color }} flex items-center justify-center text-white font-semibold text-sm">
+							{{ $initials ?: 'I' }}
+						</div>
+					@endif
+
 					<div class="flex flex-col">
-						<span class="text-gray-900 dark:text-white font-semibold">{{ $course->instructor->name }}</span>
-						<span class="text-sm text-gray-700 dark:text-gray-300">{{ ucfirst($course->instructor->role ?? 'Instructor') }}</span>
+						<span class="text-gray-900 dark:text-white font-semibold">{{ $instructor->name ?? 'Instructor' }}</span>
+						<span class="text-sm text-gray-700 dark:text-gray-300">{{ ucfirst($instructor->role ?? 'Instructor') }}</span>
 					</div>
 				</div>
 
@@ -75,10 +91,30 @@
 					</div>
 
 					<!-- Enroll Button -->
-					<a href="#"
-						class="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition">
-						Enroll Now
-					</a>
+					@auth
+						@php
+							$enrolled = auth()->user()->courses()->where('course_id', $course->id)->exists();
+						@endphp
+						@if($enrolled)
+							<a href="{{ route('student.courses.index') }}"
+								class="bg-slate-600 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition">
+								View
+							</a>
+						@else
+							<form action="{{ route('courses.enroll', $course->slug) }}" method="POST">
+								@csrf
+								<button type="submit"
+									class="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition">
+									Enroll Now
+								</button>
+							</form>
+						@endif
+					@else
+						<a href="{{ route('login') }}"
+							class="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition">
+							Enroll Now
+						</a>
+					@endauth
 
 					<!-- Optional Additional Info -->
 					<div class="text-sm text-gray-600 dark:text-gray-400 mt-2">

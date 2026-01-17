@@ -12,6 +12,8 @@ use App\Livewire\Instructor\Courses\Create as InstructorCourseCreate;
 use App\Livewire\Instructor\Courses\Edit as InstructorCourseEdit;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseEnrollmentController;
+use App\Models\Course;
 use App\Livewire\Instructor\Students\Index as InstructorStudentIndex;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\Students\Index as AdminStudentIndex;
@@ -33,6 +35,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::prefix('courses')->name('courses.')->group(function () {
     Route::get('/', [CourseController::class, 'index'])->name('index');
     Route::get('/{course}', [CourseController::class, 'show'])->name('show');
+    // Fallback for users who visit the enroll URL directly via GET (avoid 404)
+    Route::get('/{course}/enroll', function (Course $course) {
+        return redirect()->route('courses.show', $course->id);
+    })->name('enroll.get');
+    // Enroll in a course (students only) — handled via POST
+    Route::post('/{course}/enroll', [CourseEnrollmentController::class, 'store'])->name('enroll')->middleware('auth');
 });
 
 // ==========================
