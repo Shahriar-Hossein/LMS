@@ -43,33 +43,29 @@ class LessonView extends BaseComponent
 
     public function loadLessonsForNavigation()
     {
-        // Get all lessons across all modules in order
-        $this->allLessons = Lesson::whereHas('module', function($q) {
-            $q->where('course_id', $this->course->id);
-        })
-        ->join('modules', 'lessons.module_id', '=', 'modules.id')
-        ->orderBy('modules.position')
-        ->orderBy('lessons.position')
-        ->select('lessons.*')
-        ->get();
+        // Load modules with lessons (both relations already order by `position`) and
+        // flatten lessons preserving module order so navigation matches the sidebar.
+        $modules = $this->course->modules()->with('lessons')->get();
 
-        // Find current lesson index
+        $this->allLessons = collect();
+        foreach ($modules as $mod) {
+            foreach ($mod->lessons as $l) {
+                $this->allLessons->push($l);
+            }
+        }
+
+        // Find current lesson index (cast ids to int to avoid strict type issues)
+        $this->currentIndex = 0;
         foreach ($this->allLessons as $index => $lessonItem) {
-            if ($lessonItem->id === $this->lesson->id) {
+            if ((int) $lessonItem->id === (int) $this->lesson->id) {
                 $this->currentIndex = $index;
                 break;
             }
         }
 
-        // Set next and previous lessons using array access
-        /** @var array<int, Lesson> $lessonsArray */
         $lessonsArray = $this->allLessons->values()->all();
-        if ($this->currentIndex > 0) {
-            $this->prevLesson = $lessonsArray[$this->currentIndex - 1] ?? null;
-        }
-        if ($this->currentIndex < count($lessonsArray) - 1) {
-            $this->nextLesson = $lessonsArray[$this->currentIndex + 1] ?? null;
-        }
+        $this->prevLesson = $this->currentIndex > 0 ? $lessonsArray[$this->currentIndex - 1] : null;
+        $this->nextLesson = $this->currentIndex < count($lessonsArray) - 1 ? $lessonsArray[$this->currentIndex + 1] : null;
     }
 
     public function render()
