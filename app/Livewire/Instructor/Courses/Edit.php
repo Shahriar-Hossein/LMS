@@ -57,8 +57,8 @@ class Edit extends BaseComponent
             'price'        => 'nullable|numeric|min:0',
             'discount'     => 'nullable|numeric|min:0|max:100',
             'status'       => 'required|in:draft,published,pending',
-            'banner'       => 'nullable|image|max:5120', // optional, max 5MB
-            'video'        => 'nullable|mimes:mp4,avi,mov|max:51200', // optional, max 50MB
+            'banner'       => 'nullable|image|max:51200', // optional, max 50MB
+            'video'        => 'nullable|mimes:mp4,avi,mov|max:512000', // optional, max 500MB
         ]);
 
          // Handle banner
