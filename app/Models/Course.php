@@ -133,4 +133,20 @@ class Course extends Model
     {
         return $this->hasMany(\App\Models\Module::class)->orderBy('position');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(\App\Models\CourseReview::class);
+    }
+
+    public function averageRating(): float
+    {
+        $avg = $this->reviews()->avg('rating');
+        return $avg ? round((float) $avg, 1) : 0.0;
+    }
+
+    public function reviewsCount(): int
+    {
+        return (int) $this->reviews()->count();
+    }
 }

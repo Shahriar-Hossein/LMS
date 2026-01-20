@@ -67,10 +67,20 @@
 						<span>{{ $course->modules_count ?? 0 }} modules</span>
 					</div>
 					<div class="flex items-center gap-2">
-						<svg class="w-4 h-4 fill-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-							<path d="M10 15l-5.878 3.09L5.4 11.545 1 7.91l6.06-.545L10 2.5l2.94 4.865L19 7.91l-4.4 3.636 1.278 6.545z" />
-						</svg>
-						<span>4.5 (120 reviews)</span>
+						<div class="flex">
+							@for ($i = 1; $i <= 5; $i++)
+								<svg class="w-4 h-4 {{ $i <= round($averageRating ?? 0) ? 'fill-amber-400' : 'fill-gray-300 dark:fill-zinc-700' }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+									<path d="M10 15l-5.878 3.09L5.4 11.545 1 7.91l6.06-.545L10 2.5l2.94 4.865L19 7.91l-4.4 3.636 1.278 6.545z" />
+								</svg>
+							@endfor
+						</div>
+						<span>
+							@if(($course->reviews_count ?? 0) > 0)
+								{{ number_format($averageRating ?? 0, 1) }} ({{ $course->reviews_count }} reviews)
+							@else
+								No reviews yet
+							@endif
+						</span>
 					</div>
 				</div>
 
@@ -136,6 +146,36 @@
 				@endforeach
 			</ul>
 		</div>
+
+			<!-- Student Reviews -->
+			<div class="mt-12">
+				<h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Student Reviews</h2>
+
+				@if($reviews->isEmpty())
+					<p class="text-gray-600 dark:text-gray-400">No reviews yet. Be the first to enroll and leave a review.</p>
+				@else
+					<div class="space-y-4">
+						@foreach($reviews as $review)
+							<div class="bg-white dark:bg-zinc-800 rounded-lg shadow-md p-4">
+								<div class="flex items-center justify-between mb-1">
+									<div class="flex items-center gap-2">
+										<span class="text-sm font-semibold text-gray-900 dark:text-white">{{ $review->user->name ?? 'Student' }}</span>
+										<span class="text-xs text-gray-500 dark:text-gray-400">{{ $review->created_at->diffForHumans() }}</span>
+									</div>
+									<div class="flex items-center gap-1">
+										@for ($i = 1; $i <= 5; $i++)
+											<svg class="w-4 h-4 {{ $review->rating >= $i ? 'fill-amber-400' : 'fill-gray-300 dark:fill-zinc-700' }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+												<path d="M10 15l-5.878 3.09L5.4 11.545 1 7.91l6.06-.545L10 2.5l2.94 4.865L19 7.91l-4.4 3.636 1.278 6.545z" />
+											</svg>
+										@endfor
+									</div>
+								</div>
+								<p class="text-sm text-gray-700 dark:text-gray-300 mt-1">{{ $review->comment }}</p>
+							</div>
+						@endforeach
+					</div>
+				@endif
+			</div>
 
 	</div>
 </section>

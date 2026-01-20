@@ -27,6 +27,16 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return view('pages.course.index', compact('course'));
+        $course->load(['instructor', 'modules']);
+        $course->loadCount(['reviews']);
+
+        $averageRating = $course->averageRating();
+        $reviews = $course->reviews()
+            ->with('user')
+            ->latest()
+            ->take(10)
+            ->get();
+
+        return view('pages.course.index', compact('course', 'averageRating', 'reviews'));
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -143,5 +144,13 @@ class User extends Authenticatable
         }
 
         return $completed;
+    }
+
+    /**
+     * Reviews the user has written for courses.
+     */
+    public function courseReviews(): HasMany
+    {
+        return $this->hasMany(CourseReview::class);
     }
 }
