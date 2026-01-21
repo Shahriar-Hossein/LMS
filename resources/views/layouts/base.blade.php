@@ -13,6 +13,7 @@
     @yield('content')
 
 
-    {{-- Add footer here when done --}}
+    {{-- Footer --}}
+    @include('partials.footer')
 </body>
 </html>
