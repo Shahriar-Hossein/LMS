@@ -9,110 +9,101 @@
     <div class="flex flex-col lg:flex-row gap-8">
       <!-- Filters Column -->
       <aside class="w-full lg:w-1/4 bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Filters</h3>
+        <h3 class="text-xl font-semibold mb-4 text-emerald-700 dark:text-emerald-300">Filters</h3>
 
-        <!-- Category Filter -->
-        <div class="mb-6">
-          <h4 class="font-medium mb-2 text-gray-800 dark:text-gray-200">Category</h4>
-          <ul class="space-y-2">
-            @foreach($categories as $category)
+        <form method="GET" action="{{ route('courses.index') }}" class="space-y-6">
+
+          <!-- Category Filter -->
+          <div>
+            <h4 class="font-medium mb-2 text-gray-800 dark:text-gray-200">Category</h4>
+            <ul class="space-y-2 max-h-48 overflow-auto pr-2">
+              @foreach($categories as $category)
+                <li>
+                  <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
+                    <input type="checkbox" name="categories[]" value="{{ $category->id }}" class="form-checkbox h-4 w-4 text-emerald-600 dark:text-emerald-400" {{ (is_array(request('categories')) && in_array($category->id, request('categories'))) ? 'checked' : '' }}>
+                    <span class="ml-2">{{ $category->name }}</span>
+                  </label>
+                </li>
+              @endforeach
+            </ul>
+          </div>
+
+          <!-- Price Filter -->
+          <div>
+            <h4 class="font-medium mb-2 text-gray-800 dark:text-gray-200">Price</h4>
+            <ul class="space-y-2">
               <li>
                 <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                  <input type="checkbox" class="form-checkbox h-4 w-4 text-emerald-600 dark:text-emerald-400">
-                  <span class="ml-2">{{ $category->name }}</span>
+                  <input type="radio" name="price" value="free" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400" {{ request('price') === 'free' ? 'checked' : '' }}>
+                  <span class="ml-2">Free</span>
                 </label>
               </li>
-            @endforeach
-          </ul>
-        </div>
+              <li>
+                <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
+                  <input type="radio" name="price" value="0-500" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400" {{ request('price') === '0-500' ? 'checked' : '' }}>
+                  <span class="ml-2">1 - 500 tk</span>
+                </label>
+              </li>
+              <li>
+                <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
+                  <input type="radio" name="price" value="501-1000" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400" {{ request('price') === '501-1000' ? 'checked' : '' }}>
+                  <span class="ml-2">501 - 1000 tk</span>
+                </label>
+              </li>
+              <li>
+                <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
+                  <input type="radio" name="price" value="1001-2000" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400" {{ request('price') === '1001-2000' ? 'checked' : '' }}>
+                  <span class="ml-2">1001 - 2000 tk</span>
+                </label>
+              </li>
+              <li>
+                <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
+                  <input type="radio" name="price" value="2001-5000" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400" {{ request('price') === '2001-5000' ? 'checked' : '' }}>
+                  <span class="ml-2">2001 - 5000 tk</span>
+                </label>
+              </li>
+              <li>
+                <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
+                  <input type="radio" name="price" value=">5000" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400" {{ request('price') === '>5000' ? 'checked' : '' }}>
+                  <span class="ml-2">&gt; 5000 tk</span>
+                </label>
+              </li>
+            </ul>
+          </div>
 
-        <!-- Price Filter -->
-        <div class="mb-6">
-          <h4 class="font-medium mb-2 text-gray-800 dark:text-gray-200">Price</h4>
-          <ul class="space-y-2">
-            <li>
-              <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                <input type="radio" name="price" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400">
-                <span class="ml-2">Free</span>
-              </label>
-            </li>
-            <li>
-              <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                <input type="radio" name="price" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400">
-                <span class="ml-2"> <= 500 tk </span>
-              </label>
-            </li>
-            <li>
-              <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                <input type="radio" name="price" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400">
-                <span class="ml-2">501 - 1000 tk</span>
-              </label>
-            </li>
-            <li>
-              <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                <input type="radio" name="price" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400">
-                <span class="ml-2">1001 - 2000 tk</span>
-              </label>
-            </li>
-            <li>
-              <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                <input type="radio" name="price" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400">
-                <span class="ml-2">2001 - 5000 tk</span>
-              </label>
-            </li>
-            <li>
-              <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                <input type="radio" name="price" class="form-radio h-4 w-4 text-emerald-600 dark:text-emerald-400">
-                <span class="ml-2"> > 5000 tk</span>
-              </label>
-            </li>
+          <div class="flex items-center gap-3">
+            <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded shadow">Apply</button>
+            <a href="{{ route('courses.index') }}" class="text-sm text-emerald-600 hover:underline">Reset</a>
+          </div>
 
-          </ul>
-        </div>
-
-        <!-- Level Filter -->
-        <div>
-          <h4 class="font-medium mb-2 text-gray-800 dark:text-gray-200">Level</h4>
-          <ul class="space-y-2">
-            <li>
-              <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                <input type="checkbox" class="form-checkbox h-4 w-4 text-emerald-600 dark:text-emerald-400">
-                <span class="ml-2">Beginner</span>
-              </label>
-            </li>
-            <li>
-              <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                <input type="checkbox" class="form-checkbox h-4 w-4 text-emerald-600 dark:text-emerald-400">
-                <span class="ml-2">Intermediate</span>
-              </label>
-            </li>
-            <li>
-              <label class="inline-flex items-center text-gray-700 dark:text-gray-300">
-                <input type="checkbox" class="form-checkbox h-4 w-4 text-emerald-600 dark:text-emerald-400">
-                <span class="ml-2">Advanced</span>
-              </label>
-            </li>
-          </ul>
-        </div>
+        </form>
       </aside>
 
       <!-- Courses Column -->
       <div class="flex-1">
         <!-- Search & Sorting -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+        <form method="GET" action="{{ route('courses.index') }}" class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+          <!-- Carry over existing filters as hidden inputs -->
+          @foreach((array) request('categories', []) as $catId)
+            <input type="hidden" name="categories[]" value="{{ $catId }}">
+          @endforeach
+          @if(request('price'))
+            <input type="hidden" name="price" value="{{ request('price') }}">
+          @endif
+
           <!-- Search Bar -->
-          <input type="text" placeholder="Search courses..."
+          <input name="search" type="text" placeholder="Search courses..." value="{{ request('search') }}"
                  class="flex-1 border border-gray-300 dark:border-zinc-700 rounded-md px-4 py-2 text-gray-900 dark:text-white bg-white dark:bg-zinc-800 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
 
           <!-- Sorting -->
-          <select class="border border-gray-300 dark:border-zinc-700 rounded-md px-4 py-2 bg-white dark:bg-zinc-800 text-gray-900 dark:text-white">
+          <select name="sort" class="border border-gray-300 dark:border-zinc-700 rounded-md px-4 py-2 bg-white dark:bg-zinc-800 text-gray-900 dark:text-white">
             <option value="">Sort By</option>
-            <option value="latest">Latest</option>
-            <option value="popular">Most Popular</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
+            <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Latest</option>
+            <option value="popular" {{ request('sort') === 'popular' ? 'selected' : '' }}>Most Popular</option>
+            <option value="price-low" {{ request('sort') === 'price-low' ? 'selected' : '' }}>Price: Low to High</option>
+            <option value="price-high" {{ request('sort') === 'price-high' ? 'selected' : '' }}>Price: High to Low</option>
           </select>
-        </div>
+        </form>
 
         <!-- Courses List -->
         <div class="flex flex-col gap-6">
@@ -168,6 +159,8 @@
             </div>
         @endforeach
         </div>
+
+        <div class="mt-6">{{ $courses->links() }}</div>
 
       </div>
     </div>

@@ -36,6 +36,13 @@ use App\Livewire\Admin\Settings\Password as AdminPassword;
 // Public routes
 // =========================
 Route::get('/', [HomeController::class, 'index'])->name('home');
+// Static informational pages
+Route::view('/about', 'pages.about')->name('about');
+Route::view('/faq', 'pages.faq')->name('faq');
+Route::view('/contact', 'pages.contact')->name('contact');
+Route::view('/privacy', 'pages.privacy')->name('privacy');
+Route::view('/terms', 'pages.terms')->name('terms');
+Route::view('/help', 'pages.help')->name('help');
 Route::prefix('courses')->name('courses.')->group(function () {
     Route::get('/', [CourseController::class, 'index'])->name('index');
     Route::get('/{course}', [CourseController::class, 'show'])->name('show');

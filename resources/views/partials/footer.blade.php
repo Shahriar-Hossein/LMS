@@ -52,7 +52,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
+            <a href="{{ route('about') }}" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
               <i class="fas fa-chevron-right text-xs"></i>
               About Us
             </a>
@@ -71,31 +71,31 @@
         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Support</h3>
         <ul class="space-y-3">
           <li>
-            <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
+            <a href="{{ route('help') }}" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
               <i class="fas fa-chevron-right text-xs"></i>
               Help Center
             </a>
           </li>
           <li>
-            <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
+            <a href="{{ route('faq') }}" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
               <i class="fas fa-chevron-right text-xs"></i>
               FAQ
             </a>
           </li>
           <li>
-            <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
+            <a href="{{ route('terms') }}" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
               <i class="fas fa-chevron-right text-xs"></i>
               Terms & Conditions
             </a>
           </li>
           <li>
-            <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
+            <a href="{{ route('privacy') }}" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
               <i class="fas fa-chevron-right text-xs"></i>
               Privacy Policy
             </a>
           </li>
           <li>
-            <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
+            <a href="{{ route('contact') }}" class="text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-2">
               <i class="fas fa-chevron-right text-xs"></i>
               Contact Us
             </a>

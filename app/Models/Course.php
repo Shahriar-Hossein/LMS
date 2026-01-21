@@ -134,6 +134,14 @@ class Course extends Model
         return $this->hasMany(\App\Models\Module::class)->orderBy('position');
     }
 
+    /**
+     * The students enrolled in the course (pivot table `course_student`).
+     */
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'course_student', 'course_id', 'user_id');
+    }
+
     public function reviews()
     {
         return $this->hasMany(\App\Models\CourseReview::class);
