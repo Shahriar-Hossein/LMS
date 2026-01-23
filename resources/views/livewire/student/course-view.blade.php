@@ -157,20 +157,26 @@
                                     <h4 class="font-semibold text-emerald-700 dark:text-emerald-300 mb-3">📝 Assignments</h4>
                                     <ul class="space-y-2">
                                         @foreach($module->assignments as $assignment)
-                                            <li class="flex items-center gap-3 p-3 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
-                                                <div class="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 flex items-center justify-center text-sm font-medium">
-                                                    {{ $assignment->position }}
-                                                </div>
-                                                <div class="flex-1">
-                                                    <div class="font-medium text-gray-800 dark:text-gray-200">
-                                                        {{ $assignment->title }}
+                                            <li>
+                                                <a href="{{ route('student.assignments.view', ['course' => $course->slug, 'assignment' => $assignment->id]) }}" 
+                                                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/30 transition-colors group bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
+                                                    <div class="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 flex items-center justify-center text-sm font-medium">
+                                                        {{ $assignment->position }}
                                                     </div>
-                                                    @if($assignment->description)
-                                                        <div class="text-sm text-gray-600 dark:text-gray-400">
-                                                            {{ Str::limit($assignment->description, 60) }}
+                                                    <div class="flex-1">
+                                                        <div class="font-medium text-gray-800 dark:text-gray-200 group-hover:text-yellow-700 dark:group-hover:text-yellow-300">
+                                                            {{ $assignment->title }}
                                                         </div>
-                                                    @endif
-                                                </div>
+                                                        @if($assignment->description)
+                                                            <div class="text-sm text-gray-600 dark:text-gray-400">
+                                                                {{ Str::limit($assignment->description, 60) }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                    </svg>
+                                                </a>
                                             </li>
                                         @endforeach
                                     </ul>

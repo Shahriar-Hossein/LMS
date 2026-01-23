@@ -111,7 +111,7 @@ class ModulesManager extends Component
             'selectedModule' => 'required',
             'assignmentTitle' => 'required|string|max:255',
             'assignmentDescription' => 'nullable|string',
-            'assignmentFile' => 'nullable|mimes:pdf,jpeg,png,jpg|max:10240',
+            'assignmentFile' => 'nullable|file|max:10240',
         ]);
 
         $filePath = null;

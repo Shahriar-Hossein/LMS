@@ -64,7 +64,13 @@
                             <h5 class="font-medium">Assignments</h5>
                             <ul class="mt-2 space-y-2">
                                 @foreach($selectedModule->assignments as $a)
-                                    <li class="text-sm text-zinc-700 dark:text-zinc-300">{{ $a->title }}</li>
+                                    <li class="flex items-center justify-between text-sm text-zinc-700 dark:text-zinc-300 p-2 bg-white dark:bg-zinc-900 rounded border border-zinc-200 dark:border-zinc-700">
+                                        <span>{{ $a->title }}</span>
+                                        <a href="{{ route('instructor.assignments.grade', ['course' => $course->slug, 'assignment' => $a->id]) }}" 
+                                           class="px-2 py-1 text-xs bg-cyan-500 hover:bg-cyan-600 text-white rounded transition-colors">
+                                            Grade
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>

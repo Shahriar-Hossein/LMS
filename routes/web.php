@@ -98,6 +98,12 @@ Route::middleware(['auth', 'role:instructor'])
             Route::get('/create', InstructorCourseCreate::class)->name('create');
             Route::get('/{course}/edit', InstructorCourseEdit::class)->name('edit');
         });
+        
+        // Assignment grading routes
+        Route::prefix('assignments')->name('assignments.')->group(function () {
+            Route::get('/{course}/{assignment}/grade', \App\Livewire\Instructor\Courses\AssignmentGrader::class)->name('grade');
+        });
+
         Route::prefix('students')->name('students.')->group(function () {
             Route::get('/', InstructorStudentIndex::class)->name('index');
         });
@@ -128,6 +134,11 @@ Route::middleware(['auth', 'role:student'])
         // Student lessons
         Route::prefix('courses/{course}/lessons')->name('lessons.')->group(function () {
             Route::get('/{lesson}', \App\Livewire\Student\LessonView::class)->name('view');
+        });
+
+        // Student assignments
+        Route::prefix('courses/{course}/assignments')->name('assignments.')->group(function () {
+            Route::get('/{assignment}', \App\Livewire\Student\AssignmentView::class)->name('view');
         });
 
         // Student settings

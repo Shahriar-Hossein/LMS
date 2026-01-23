@@ -153,4 +153,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(CourseReview::class);
     }
+
+    /**
+     * Assignment submissions from this user (as a student).
+     */
+    public function assignmentSubmissions(): HasMany
+    {
+        return $this->hasMany(AssignmentSubmission::class, 'user_id');
+    }
+
+    /**
+     * Assignment submissions graded by this user (as an instructor).
+     */
+    public function gradedSubmissions(): HasMany
+    {
+        return $this->hasMany(AssignmentSubmission::class, 'graded_by');
+    }
 }
