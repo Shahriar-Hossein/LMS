@@ -78,7 +78,13 @@ class PaymentController extends Controller
      */
     public function fail(Request $request)
     {
-        $this->sslCommerz->processFail($request->all());
+        $result = $this->sslCommerz->processFail($request->all());
+        $payment = $result['payment'] ?? null;
+        
+        if ($payment && $payment->course) {
+            return redirect()->route('courses.show', $payment->course)
+                ->with('error', 'Payment failed. Please try again.');
+        }
         
         return redirect()->route('student.dashboard')
             ->with('error', 'Payment failed. Please try again.');
@@ -89,7 +95,13 @@ class PaymentController extends Controller
      */
     public function cancel(Request $request)
     {
-        $this->sslCommerz->processCancel($request->all());
+        $result = $this->sslCommerz->processCancel($request->all());
+        $payment = $result['payment'] ?? null;
+        
+        if ($payment && $payment->course) {
+            return redirect()->route('courses.show', $payment->course)
+                ->with('info', 'Payment cancelled.');
+        }
         
         return redirect()->route('student.dashboard')
             ->with('info', 'Payment cancelled.');

@@ -118,14 +118,19 @@ Route::middleware(['auth', 'role:instructor'])
 // ==========================
 // Payment Routes
 // ==========================
+// Authenticated payment routes
 Route::middleware('auth')->prefix('payment')->name('payment.')->group(function () {
-    Route::post('/initiate/{course}', [PaymentController::class, 'initiate'])->name('initiate');
+    Route::post('/initiate/{course:id}', [PaymentController::class, 'initiate'])->name('initiate');
+    Route::get('/confirmation/{payment}', [PaymentController::class, 'confirmation'])->name('confirmation');
+    Route::get('/history', [PaymentController::class, 'history'])->name('history');
+});
+
+// Payment gateway callback routes (no auth/CSRF required - server-to-server communication)
+Route::prefix('payment')->name('payment.')->withoutMiddleware('web')->group(function () {
     Route::post('/success', [PaymentController::class, 'success'])->name('success');
     Route::post('/fail', [PaymentController::class, 'fail'])->name('fail');
     Route::post('/cancel', [PaymentController::class, 'cancel'])->name('cancel');
     Route::post('/ipn', [PaymentController::class, 'ipn'])->name('ipn');
-    Route::get('/confirmation/{payment}', [PaymentController::class, 'confirmation'])->name('confirmation');
-    Route::get('/history', [PaymentController::class, 'history'])->name('history');
 });
 
 // ==========================

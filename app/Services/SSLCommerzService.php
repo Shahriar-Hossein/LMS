@@ -187,28 +187,46 @@ class SSLCommerzService
     public function processFail($postData)
     {
         $transactionId = $postData['tran_id'] ?? null;
+        $payment = null;
         
         if ($transactionId) {
-            Payment::where('transaction_id', $transactionId)->update([
-                'status' => 'failed',
-                'response_data' => json_encode($postData),
-            ]);
+            $payment = Payment::where('transaction_id', $transactionId)->first();
+            
+            if ($payment) {
+                $payment->update([
+                    'status' => 'failed',
+                    'response_data' => json_encode($postData),
+                ]);
+            }
         }
 
-        return ['success' => false, 'message' => 'Payment failed'];
+        return [
+            'success' => false,
+            'message' => 'Payment failed',
+            'payment' => $payment,
+        ];
     }
 
     public function processCancel($postData)
     {
         $transactionId = $postData['tran_id'] ?? null;
+        $payment = null;
         
         if ($transactionId) {
-            Payment::where('transaction_id', $transactionId)->update([
-                'status' => 'cancelled',
-                'response_data' => json_encode($postData),
-            ]);
+            $payment = Payment::where('transaction_id', $transactionId)->first();
+            
+            if ($payment) {
+                $payment->update([
+                    'status' => 'cancelled',
+                    'response_data' => json_encode($postData),
+                ]);
+            }
         }
 
-        return ['success' => false, 'message' => 'Payment cancelled'];
+        return [
+            'success' => false,
+            'message' => 'Payment cancelled',
+            'payment' => $payment,
+        ];
     }
 }
