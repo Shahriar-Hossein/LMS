@@ -111,17 +111,17 @@
 								View
 							</a>
 						@else
-							<form action="{{ route('courses.enroll', $course->slug) }}" method="POST">
+							<form action="{{ route('payment.initiate', $course) }}" method="POST">
 								@csrf
 								<button type="submit"
-									class="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition">
+									class="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition w-full">
 									Enroll Now
 								</button>
 							</form>
 						@endif
 					@else
 						<a href="{{ route('login') }}"
-							class="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition">
+							class="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition block">
 							Enroll Now
 						</a>
 					@endauth

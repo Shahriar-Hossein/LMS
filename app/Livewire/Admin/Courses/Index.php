@@ -22,7 +22,10 @@ class Index extends BaseComponent
 
     public function render()
     {
-        $courses = Course::when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"))
+        $courses = Course::with(['instructor', 'category'])
+            ->withCount(['modules', 'students'])
+            ->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%")
+                ->orWhereHas('instructor', fn($q2) => $q2->where('name', 'like', "%{$this->search}%")))
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 

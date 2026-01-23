@@ -15,15 +15,6 @@ class AllCourses extends BaseComponent
         $this->enrolled = auth()->user()->courses()->pluck('courses.id')->toArray();
     }
 
-    public function enroll($courseId)
-    {
-        $user = auth()->user();
-        if (! in_array($courseId, $this->enrolled)) {
-            $user->courses()->attach($courseId);
-            $this->enrolled[] = $courseId;
-        }
-    }
-
     public function render()
     {
         return view('livewire.student.all-courses');

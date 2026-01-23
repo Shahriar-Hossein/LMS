@@ -16,6 +16,7 @@ use App\Livewire\Instructor\Courses\Edit as InstructorCourseEdit;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseEnrollmentController;
+use App\Http\Controllers\PaymentController;
 use App\Models\Course;
 use App\Livewire\Instructor\Students\Index as InstructorStudentIndex;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
@@ -115,6 +116,19 @@ Route::middleware(['auth', 'role:instructor'])
 
 
 // ==========================
+// Payment Routes
+// ==========================
+Route::middleware('auth')->prefix('payment')->name('payment.')->group(function () {
+    Route::post('/initiate/{course}', [PaymentController::class, 'initiate'])->name('initiate');
+    Route::post('/success', [PaymentController::class, 'success'])->name('success');
+    Route::post('/fail', [PaymentController::class, 'fail'])->name('fail');
+    Route::post('/cancel', [PaymentController::class, 'cancel'])->name('cancel');
+    Route::post('/ipn', [PaymentController::class, 'ipn'])->name('ipn');
+    Route::get('/confirmation/{payment}', [PaymentController::class, 'confirmation'])->name('confirmation');
+    Route::get('/history', [PaymentController::class, 'history'])->name('history');
+});
+
+// ==========================
 // Student Routes (later)
 // ==========================
 Route::middleware(['auth', 'role:student'])
@@ -128,6 +142,7 @@ Route::middleware(['auth', 'role:student'])
         Route::prefix('courses')->name('courses.')->group(function () {
             Route::get('/', \App\Livewire\Student\EnrolledCourses::class)->name('index');
             Route::get('/all', \App\Livewire\Student\AllCourses::class)->name('all');
+            Route::get('/{course}/detail', \App\Livewire\Student\CourseDetail::class)->name('detail');
             Route::get('/{course}', \App\Livewire\Student\CourseView::class)->name('view');
         });
 

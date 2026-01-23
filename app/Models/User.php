@@ -78,6 +78,14 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'course_student')->withTimestamps();
     }
 
+    /**
+     * Payments made by the user
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function enrolledCount(): int
     {
         return $this->courses()->count();
