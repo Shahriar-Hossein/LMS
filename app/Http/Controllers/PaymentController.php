@@ -30,9 +30,12 @@ class PaymentController extends Controller
                 ->with('info', 'You are already enrolled in this course.');
         }
 
-        // Check if course is free
-        $finalPrice = $course->price - ($course->discount ?? 0);
-        
+        // Check if course is free (discount is percentage)
+        $price = floatval($course->price);
+        $discountPercent = floatval($course->discount ?? 0);
+        $discountAmount = ($discountPercent > 0) ? ($price * ($discountPercent / 100)) : 0;
+        $finalPrice = max(0, $price - $discountAmount);
+
         if ($finalPrice <= 0) {
             // Free course, enroll directly
             $user->courses()->attach($course->id, [

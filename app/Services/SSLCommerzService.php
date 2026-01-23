@@ -29,11 +29,11 @@ class SSLCommerzService
     {
         $transactionId = 'TXN-' . time() . '-' . Str::random(10);
         
-        // Calculate final amount
-        $amount = $course->price;
-        if ($course->discount > 0) {
-            $amount = $course->price - $course->discount;
-        }
+        // Calculate final amount (discount is a percentage)
+        $price = floatval($course->price);
+        $discountPercent = floatval($course->discount ?? 0);
+        $discountAmount = ($discountPercent > 0) ? ($price * ($discountPercent / 100)) : 0;
+        $amount = max(0, $price - $discountAmount);
 
         // Create payment record
         $payment = Payment::create([

@@ -15,9 +15,14 @@
                         <img src="{{ $course->banner_path ? asset('storage/'.$course->banner_path) : asset('images/placeholder.png') }}"
                              alt="{{ $course->title }}" 
                              class="w-full h-48 object-cover">
-                        @if($course->discount > 0)
+                        @php
+                            $price = floatval($course->price);
+                            $discountPercent = floatval($course->discount ?? 0);
+                            $discountAmount = ($discountPercent > 0) ? ($price * ($discountPercent / 100)) : 0;
+                        @endphp
+                        @if($discountAmount > 0)
                             <div class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                                Save ৳{{ number_format($course->discount) }}
+                                Save ৳{{ number_format($discountAmount, 2) }}
                             </div>
                         @endif
                     </div>
@@ -37,7 +42,7 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-baseline gap-2">
                                 @php
-                                    $finalPrice = $course->price - ($course->discount ?? 0);
+                                    $finalPrice = max(0, $price - $discountAmount);
                                 @endphp
                                 @if($finalPrice > 0)
                                     <span class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">

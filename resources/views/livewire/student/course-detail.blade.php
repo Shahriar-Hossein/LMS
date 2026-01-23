@@ -92,15 +92,18 @@
         <div class="lg:col-span-1">
             <div class="bg-white/80 dark:bg-zinc-900/80 rounded-2xl shadow-xl border border-emerald-100 dark:border-zinc-700 p-6 sticky top-6">
                 @php
-                    $finalPrice = $course->price - ($course->discount ?? 0);
+                    $price = floatval($course->price);
+                    $discountPercent = floatval($course->discount ?? 0);
+                    $discountAmount = ($discountPercent > 0) ? ($price * ($discountPercent / 100)) : 0;
+                    $finalPrice = max(0, $price - $discountAmount);
                 @endphp
 
                 <!-- Price Display -->
                 <div class="mb-6">
                     @if($finalPrice > 0)
                         <div class="flex items-baseline gap-2 mb-2">
-                            <span class="text-4xl font-bold text-emerald-600 dark:text-emerald-400">
-                                ৳{{ number_format($finalPrice) }}
+                                <span class="text-4xl font-bold text-emerald-600 dark:text-emerald-400">
+                                ৳{{ number_format($finalPrice, 2) }}
                             </span>
                             @if($course->discount > 0)
                                 <span class="text-xl text-gray-500 line-through">
@@ -110,7 +113,7 @@
                         </div>
                         @if($course->discount > 0)
                             <div class="inline-block bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-400 px-3 py-1 rounded-full text-sm font-semibold">
-                                Save ৳{{ number_format($course->discount) }}!
+                                Save ৳{{ number_format($discountAmount, 2) }}!
                             </div>
                         @endif
                     @else
