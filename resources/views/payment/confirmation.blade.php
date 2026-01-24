@@ -1,4 +1,7 @@
-<x-app-layout>
+@extends('layouts.base')
+@section('title', 'Payment Confirmation')
+
+@section('content')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Payment Confirmation') }}
@@ -7,7 +10,54 @@
 
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <style>
+                @media print {
+                    /* hide everything by default, reveal the printable area */
+                    body * { visibility: hidden !important; }
+                    #printable-area, #printable-area * { visibility: visible !important; }
+                    /* keep page layout, and request exact color printing where supported */
+                    #printable-area {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                        page-break-inside: avoid;
+                    }
+                    /* ensure children request color adjustments but do not force inheritance */
+                    #printable-area * {
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    /* hide interactive/action elements */
+                    .no-print { display: none !important; }
+                    /* force single A4 page with small margins */
+                    @page { size: A4; margin: 10mm; }
+                    html, body { height: auto; }
+
+                    /* If the site is in dark mode, force dark backgrounds/colors for print */
+                    html.dark #printable-area {
+                        background: #071024 !important;
+                        color: #e6eef6 !important;
+                    }
+                    html.dark #printable-area .bg-gradient-to-r {
+                        background: linear-gradient(to right,#064e3b,#047b7a) !important;
+                        color: #ffffff !important;
+                    }
+                    html.dark #printable-area .bg-gray-50 {
+                        background-color: #0f1724 !important;
+                        color: #cbd5e1 !important;
+                    }
+                    html.dark #printable-area .from-emerald-600,
+                    html.dark #printable-area .text-emerald-600 {
+                        color: #34d399 !important;
+                    }
+                    html.dark #printable-area svg { color: inherit; stroke: currentColor; }
+                }
+            </style>
             <div class="bg-white/80 dark:bg-zinc-900/80 rounded-2xl shadow-xl border border-emerald-100 dark:border-zinc-700 overflow-hidden">
+                <div id="printable-area">
                 <!-- Success Header -->
                 <div class="bg-gradient-to-r from-emerald-500 to-cyan-500 p-8 text-white text-center">
                     <div class="flex justify-center mb-4">
@@ -77,30 +127,34 @@
                             </div>
                         </div>
 
-                        <!-- Action Buttons -->
-                        <div class="flex flex-col sm:flex-row gap-3 pt-4">
-                            <a href="{{ route('student.courses.view', $payment->course) }}" 
-                               class="flex-1 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white font-semibold py-3 px-6 rounded-lg text-center transition-all duration-200 shadow-lg hover:shadow-xl">
-                                Start Learning
-                            </a>
-                            <a href="{{ route('student.dashboard') }}" 
-                               class="flex-1 bg-white dark:bg-zinc-800 border-2 border-emerald-600 dark:border-emerald-500 text-emerald-600 dark:text-emerald-400 font-semibold py-3 px-6 rounded-lg text-center hover:bg-emerald-50 dark:hover:bg-zinc-700 transition-all duration-200">
-                                Go to Dashboard
-                            </a>
-                        </div>
+                    </div>
+                </div>
 
-                        <!-- Download Receipt -->
-                        <div class="text-center pt-4 border-t border-gray-200 dark:border-zinc-700">
-                            <button onclick="window.print()" class="text-emerald-600 dark:text-emerald-400 hover:underline inline-flex items-center">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-                                </svg>
-                                Print Receipt
-                            </button>
-                        </div>
+                <!-- Action Buttons (do not print) -->
+                <div class="flex flex-col sm:flex-row gap-3 py-4 mx-4 no-print">
+                    <a href="{{ route('student.courses.view', $payment->course) }}" 
+                       class="flex-1 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white font-semibold py-3 px-6 rounded-lg text-center transition-all duration-200 shadow-lg hover:shadow-xl">
+                        Start Learning
+                    </a>
+                    <a href="{{ route('student.dashboard') }}" 
+                       class="flex-1 bg-white dark:bg-zinc-800 border-2 border-emerald-600 dark:border-emerald-500 text-emerald-600 dark:text-emerald-400 font-semibold py-3 px-6 rounded-lg text-center hover:bg-emerald-50 dark:hover:bg-zinc-700 transition-all duration-200">
+                        Go to Dashboard
+                    </a>
+                </div>
+
+                <!-- Download Receipt (do not print) -->
+                <div class="text-center py-4 border-t border-gray-200 dark:border-zinc-700 no-print">
+                    <button onclick="window.print()" class="cursor-pointer text-emerald-600 dark:text-emerald-400 hover:underline inline-flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                        </svg>
+                        Print Receipt
+                    </button>
+                </div>
+            </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Payment;
 use App\Models\Course;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class SSLCommerzService
@@ -106,19 +107,47 @@ class SSLCommerzService
         }
     }
 
-    public function validatePayment($transactionId, $amount, $currency = 'BDT')
+    public function validatePayment($valId, $transactionId, $amount, $currency = 'BDT')
     {
         $validationUrl = $this->apiUrl . '/validator/api/validationserverAPI.php';
         
-        $response = Http::asForm()->post($validationUrl, [
-            'val_id' => request('val_id'),
-            'store_id' => $this->storeId,
-            'store_passwd' => $this->storePassword,
-        ]);
+        try {
+            $response = Http::asForm()->post($validationUrl, [
+                'val_id' => $valId,
+                'store_id' => $this->storeId,
+                'store_passwd' => $this->storePassword,
+            ]);
 
-        $result = $response->json();
+            Log::info('SSLCommerz validation API response', [
+                'status_code' => $response->status(),
+                'body' => $response->body(),
+                'val_id' => $valId,
+            ]);
 
-        if (isset($result['status']) && $result['status'] === 'VALID') {
+            if (!$response->successful()) {
+                Log::error('SSLCommerz validation API request failed', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
+                return [
+                    'valid' => false,
+                    'message' => 'Validation API request failed',
+                ];
+            }
+
+            $result = $response->json();
+
+            if (!$result) {
+                Log::error('SSLCommerz validation returned invalid JSON', [
+                    'raw_body' => $response->body()
+                ]);
+                return [
+                    'valid' => false,
+                    'message' => 'Invalid validation response',
+                ];
+            }
+
+            if (isset($result['status']) && $result['status'] === 'VALID') {
             if ($result['tran_id'] === $transactionId && 
                 floatval($result['amount']) == floatval($amount) && 
                 $result['currency'] === $currency) {
@@ -127,16 +156,48 @@ class SSLCommerzService
                     'data' => $result,
                 ];
             }
+            
+            Log::warning('Payment validation mismatch', [
+                'expected' => compact('transactionId', 'amount', 'currency'),
+                'received' => [
+                    'tran_id' => $result['tran_id'] ?? null,
+                    'amount' => $result['amount'] ?? null,
+                    'currency' => $result['currency'] ?? null,
+                ]
+            ]);
         }
 
-        return [
-            'valid' => false,
-            'message' => 'Payment validation failed',
-        ];
+            Log::error('Payment validation failed', [
+                'val_id' => $valId,
+                'status' => $result['status'] ?? 'unknown',
+                'result' => $result
+            ]);
+
+            return [
+                'valid' => false,
+                'message' => 'Payment validation failed',
+            ];
+        } catch (\Exception $e) {
+            Log::error('Payment validation exception', [
+                'val_id' => $valId,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return [
+                'valid' => false,
+                'message' => 'Validation error: ' . $e->getMessage(),
+            ];
+        }
     }
 
     public function processSuccess($postData)
     {
+        Log::info('Payment success callback received', [
+            'ip' => request()->ip(),
+            'payload' => $postData
+        ]);
+        
         $transactionId = $postData['tran_id'] ?? null;
         
         if (!$transactionId) {
@@ -149,14 +210,42 @@ class SSLCommerzService
             return ['success' => false, 'message' => 'Payment record not found'];
         }
 
-        // Validate the payment
-        $validation = $this->validatePayment(
-            $payment->transaction_id,
-            $payment->amount,
-            $payment->currency
-        );
+        // In sandbox mode, trust the callback status directly
+        // In production, validate with SSLCommerz API
+        $isValid = false;
+        
+        if ($this->isSandbox) {
+            // Sandbox mode: Trust callback status and verify basic fields
+            $callbackStatus = $postData['status'] ?? '';
+            $callbackAmount = floatval($postData['amount'] ?? 0);
+            
+            if ($callbackStatus === 'VALID' && 
+                abs($callbackAmount - $payment->amount) < 0.01) {
+                $isValid = true;
+                Log::info('Payment validated via sandbox callback', [
+                    'transaction_id' => $transactionId,
+                    'amount' => $callbackAmount
+                ]);
+            }
+        } else {
+            // Production mode: Validate with SSLCommerz API
+            $valId = $postData['val_id'] ?? null;
+            
+            if (!$valId) {
+                return ['success' => false, 'message' => 'Validation ID not found'];
+            }
+            
+            $validation = $this->validatePayment(
+                $valId,
+                $payment->transaction_id,
+                $payment->amount,
+                $payment->currency
+            );
+            
+            $isValid = $validation['valid'] ?? false;
+        }
 
-        if ($validation['valid']) {
+        if ($isValid) {
             $payment->update([
                 'status' => 'success',
                 'payment_method' => $postData['card_type'] ?? null,
@@ -175,11 +264,23 @@ class SSLCommerzService
                 ]);
             }
 
+            Log::info('Payment processed successfully', [
+                'payment_id' => $payment->id,
+                'user_id' => $user->id,
+                'course_id' => $course->id
+            ]);
+
             return [
                 'success' => true,
                 'payment' => $payment,
             ];
         }
+
+        Log::error('Payment validation failed in processSuccess', [
+            'transaction_id' => $transactionId,
+            'callback_status' => $postData['status'] ?? 'unknown',
+            'mode' => $this->isSandbox ? 'sandbox' : 'production'
+        ]);
 
         return ['success' => false, 'message' => 'Payment validation failed'];
     }

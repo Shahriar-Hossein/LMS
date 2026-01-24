@@ -122,6 +122,7 @@ Route::middleware(['auth', 'role:instructor'])
 Route::middleware('auth')->prefix('payment')->name('payment.')->group(function () {
     Route::post('/initiate/{course:id}', [PaymentController::class, 'initiate'])->name('initiate');
     Route::get('/confirmation/{payment}', [PaymentController::class, 'confirmation'])->name('confirmation');
+    Route::get('/failed/{payment?}', [PaymentController::class, 'failed'])->name('failed');
     Route::get('/history', [PaymentController::class, 'history'])->name('history');
 });
 

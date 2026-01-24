@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Services\SSLCommerzService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
@@ -67,7 +68,18 @@ class PaymentController extends Controller
         if ($result['success']) {
             $payment = $result['payment'];
             $course = $payment->course;
-            
+
+            // Ensure enrollment is recorded (idempotent)
+            $user = $payment->user;
+            if ($user && $course) {
+                if (! $user->courses()->where('course_id', $course->id)->exists()) {
+                    $user->courses()->attach($course->id, [
+                        'price_paid' => $payment->amount,
+                        'progress' => 0,
+                    ]);
+                }
+            }
+
             return redirect()->route('payment.confirmation', $payment->id)
                 ->with('success', 'Payment successful! You are now enrolled in the course.');
         }
@@ -83,14 +95,12 @@ class PaymentController extends Controller
     {
         $result = $this->sslCommerz->processFail($request->all());
         $payment = $result['payment'] ?? null;
-        
-        if ($payment && $payment->course) {
-            return redirect()->route('courses.show', $payment->course)
-                ->with('error', 'Payment failed. Please try again.');
+        // Redirect user to a friendly failure page (authenticated)
+        if ($payment) {
+            return redirect()->route('payment.failed', $payment->id);
         }
-        
-        return redirect()->route('student.dashboard')
-            ->with('error', 'Payment failed. Please try again.');
+
+        return redirect()->route('payment.failed');
     }
 
     /**
@@ -100,14 +110,13 @@ class PaymentController extends Controller
     {
         $result = $this->sslCommerz->processCancel($request->all());
         $payment = $result['payment'] ?? null;
-        
-        if ($payment && $payment->course) {
-            return redirect()->route('courses.show', $payment->course)
+        // Treat cancellation like a failure for the student-facing flow
+        if ($payment) {
+            return redirect()->route('payment.failed', $payment->id)
                 ->with('info', 'Payment cancelled.');
         }
-        
-        return redirect()->route('student.dashboard')
-            ->with('info', 'Payment cancelled.');
+
+        return redirect()->route('payment.failed')->with('info', 'Payment cancelled.');
     }
 
     /**
@@ -132,6 +141,19 @@ class PaymentController extends Controller
         }
 
         return view('payment.confirmation', compact('payment'));
+    }
+
+    /**
+     * Show payment failed/cancelled page
+     */
+    public function failed(Payment $payment = null)
+    {
+        // If a payment is provided, ensure it belongs to the user
+        if ($payment && $payment->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized access to payment details.');
+        }
+
+        return view('payment.failed', compact('payment'));
     }
 
     /**
