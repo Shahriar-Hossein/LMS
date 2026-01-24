@@ -27,11 +27,11 @@
                   hover:bg-emerald-50 dark:hover:bg-zinc-800">
             Courses
         </a>
-        <a href="{{ route('student.courses.all') }}"
+        {{-- <a href="{{ route('student.courses.all') }}"
            class="block px-3 py-2 rounded-md text-sm font-medium text-emerald-700 dark:text-emerald-300
                   hover:bg-emerald-50 dark:hover:bg-zinc-800">
             Browse Courses
-        </a>
+        </a> --}}
         <a href="{{ route('payment.history') }}"
            class="block px-3 py-2 rounded-md text-sm font-medium text-emerald-700 dark:text-emerald-300
                   hover:bg-emerald-50 dark:hover:bg-zinc-800">

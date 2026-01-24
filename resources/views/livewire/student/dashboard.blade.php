@@ -9,7 +9,7 @@
 
         <div class="p-6 bg-white/80 dark:bg-zinc-900/80 rounded-2xl shadow-xl border border-emerald-100 dark:border-zinc-700">
             <h3 class="text-sm font-medium text-gray-600 dark:text-gray-300">Total Spent</h3>
-            <p class="mt-2 text-3xl font-bold text-emerald-600 dark:text-emerald-400">${{ number_format($totalSpent ?? 0, 2) }}</p>
+            <p class="mt-2 text-3xl font-bold text-emerald-600 dark:text-emerald-400">৳{{ number_format($totalSpent ?? 0, 2) }}</p>
         </div>
 
         <div class="p-6 bg-white/80 dark:bg-zinc-900/80 rounded-2xl shadow-xl border border-emerald-100 dark:border-zinc-700">
