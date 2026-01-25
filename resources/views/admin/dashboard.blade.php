@@ -1,13 +1,4 @@
 <div class="flex gap-8">
-    <aside class="w-64 bg-white/60 dark:bg-zinc-900/60 rounded-xl p-4 shadow-md">
-        <h3 class="font-semibold mb-4">Admin</h3>
-        <ul class="space-y-2 text-sm">
-            <li><a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded hover:bg-emerald-100 dark:hover:bg-zinc-800">Overview</a></li>
-            <li><a href="{{ route('admin.students.index') }}" class="block px-3 py-2 rounded hover:bg-emerald-100 dark:hover:bg-zinc-800">Students</a></li>
-            <li><a href="{{ route('admin.instructors.index') }}" class="block px-3 py-2 rounded hover:bg-emerald-100 dark:hover:bg-zinc-800">Instructors</a></li>
-        </ul>
-    </aside>
-
     <div class="flex-1 space-y-6">
         <h2 class="text-2xl font-bold text-cyan-700 dark:text-emerald-300">Admin Dashboard</h2>
 
