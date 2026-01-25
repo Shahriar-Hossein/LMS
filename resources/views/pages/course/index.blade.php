@@ -105,19 +105,21 @@
 						@php
 							$enrolled = auth()->user()->courses()->where('course_id', $course->id)->exists();
 						@endphp
-						@if($enrolled)
-							<a href="{{ route('student.courses.index') }}"
-								class="bg-slate-600 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition">
-								View
-							</a>
-						@else
-							<form action="{{ route('payment.initiate', $course) }}" method="POST">
-								@csrf
-								<button type="submit"
-									class="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition w-full">
-									Enroll Now
-								</button>
-							</form>
+						@if(auth()->user()->hasRole('student'))
+							@if($enrolled)
+								<a href="{{ route('student.courses.index') }}"
+									class="bg-slate-600 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition">
+									View
+								</a>
+							@else
+								<form action="{{ route('payment.initiate', $course) }}" method="POST">
+									@csrf
+									<button type="submit"
+										class="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-6 py-3 rounded-md text-center font-semibold shadow transition w-full">
+										Enroll Now
+									</button>
+								</form>
+							@endif
 						@endif
 					@else
 						<a href="{{ route('login') }}"
