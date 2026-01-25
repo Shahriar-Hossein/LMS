@@ -21,7 +21,7 @@
                     <td class="p-3">{{ $student->email }}</td>
                     <td class="p-3">{{ $student->created_at->format('Y-m-d') }}</td>
                     <td class="p-3">
-                        <a href="{{ route('admin.students.profile', $student->id) }}" class="inline-flex items-center px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                        <a href="{{ route('admin.students.profile', $student) }}" class="inline-flex items-center px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
                             View Profile
                         </a>
                     </td>

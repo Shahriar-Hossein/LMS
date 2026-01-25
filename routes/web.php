@@ -26,6 +26,9 @@ use App\Livewire\Admin\Courses\Index as AdminCourseIndex;
 use App\Livewire\Admin\Categories\Index as AdminCategoryIndex;
 use App\Livewire\Admin\Settings\Profile as AdminSettingsProfile;
 use App\Livewire\Admin\Settings\Password as AdminPassword;
+use App\Livewire\Admin\Students\Profile as AdminStudentProfile;
+use App\Livewire\Admin\Instructors\Profile as AdminInstructorProfile;
+use App\Livewire\Admin\Courses\View as AdminCourseView;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +68,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/dashboard', AdminDashboard::class)->name('dashboard');
         Route::prefix('courses')->name('courses.')->group(function () {
             Route::get('/', AdminCourseIndex::class)->name('index');
+            Route::get('/{course}', AdminCourseView::class)->name('view');
         });
         Route::prefix('categories')->name('categories.')->group(function () {
             Route::get('/', AdminCategoryIndex::class)->name('index');
@@ -75,9 +79,11 @@ Route::middleware(['auth', 'role:admin'])
         });
         Route::prefix('students')->name('students.')->group(function () {
             Route::get('/', AdminStudentIndex::class)->name('index');
+            Route::get('/{student}', AdminStudentProfile::class)->name('profile');
         });
         Route::prefix('instructors')->name('instructors.')->group(function () {
             Route::get('/', AdminInstructorIndex::class)->name('index');
+            Route::get('/{instructor}', AdminInstructorProfile::class)->name('profile');
         });
     });
 
