@@ -146,14 +146,20 @@
                     </div>
 
                 </div>
-                <!-- Price -->
-                <div>
+                <!-- Price & View -->
+                <div class="flex flex-col items-end gap-3">
+                  <div>
                     @if($course->discount)
-                        <span class="text-red-500 line-through mr-2">{{ $course->price }} tk</span>
-                        <span class="text-emerald-600 dark:text-emerald-400 font-semibold">{{ $course->price - ($course->price * $course->discount / 100) }} tk</span>
+                      <span class="text-red-500 line-through mr-2">{{ $course->price }} tk</span>
+                      <span class="text-emerald-600 dark:text-emerald-400 font-semibold">{{ $course->price - ($course->price * $course->discount / 100) }} tk</span>
                     @else
-                        <span class="text-emerald-600 dark:text-emerald-400 font-semibold">{{ $course->price ? $course->price .' tk' : 'Free' }}</span>
+                      <span class="text-emerald-600 dark:text-emerald-400 font-semibold">{{ $course->price ? $course->price .' tk' : 'Free' }}</span>
                     @endif
+                  </div>
+                  <a href="{{ route('courses.show', $course->slug) }}"
+                     class="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-3 py-1.5 rounded-md text-sm shadow transition">
+                    View
+                  </a>
                 </div>
 
             </div>

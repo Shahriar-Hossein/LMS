@@ -161,7 +161,7 @@ class PaymentController extends Controller
      */
     public function history()
     {
-        $payments = Auth::user()->payments()->with('course')->latest()->paginate(10);
+        $payments = Auth::user()->payments()->with('course')->latest()->paginate(6);
         
         return view('payment.history', compact('payments'));
     }
