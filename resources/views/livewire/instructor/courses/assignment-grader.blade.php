@@ -9,7 +9,7 @@
         <div class="flex items-center justify-between mb-4">
             <div>
                 <h1 class="text-3xl font-bold text-cyan-700 dark:text-emerald-300 mb-2">{{ $assignment->title }}</h1>
-                <p class="text-gray-600 dark:text-gray-400">Module: {{ $module->title }}</p>
+                {{-- <p class="text-gray-600 dark:text-gray-400">Module: {{ $module->title }}</p> --}}
             </div>
             <div class="text-right">
                 <p class="text-sm text-gray-500 dark:text-gray-400">Total Submissions</p>
