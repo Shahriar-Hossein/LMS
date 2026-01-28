@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'sslcommerz' => [
+        'store_id' => env('SSLCOMMERZ_STORE_ID', 'cyber670e1cc54b674'),
+        'store_password' => env('SSLCOMMERZ_STORE_PASSWORD', 'cyber670e1cc54b674@ssl'),
+        'sandbox' => env('SSLCOMMERZ_SANDBOX', true),
+    ],
+
 ];

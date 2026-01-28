@@ -1,3 +1,4 @@
+{{-- most likely depricated --}}
 <!-- Life is available only in the present moment. - Thich Nhat Hanh -->
 @extends('layouts.base')
 

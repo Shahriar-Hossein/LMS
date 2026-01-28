@@ -29,6 +29,8 @@ Supports instructor course creation, file uploads (images/videos), and student c
 php artisan key:generate
 php artisan migrate --seed
 php artisan storage:link
+php artisan livewire:publish --config
+set livewire preview mimes
 
 File Uploads
 

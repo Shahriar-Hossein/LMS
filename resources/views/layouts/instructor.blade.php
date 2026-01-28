@@ -6,7 +6,7 @@
     @livewireStyles
 </head>
 <body class="min-h-screen bg-gradient-to-br from-cyan-50 via-emerald-50 to-white
-             dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 flex">
+             dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 flex overflow-hidden">
 
     {{-- Sidebar --}}
     @include('partials.instructor.sidebar')
@@ -15,7 +15,7 @@
     <div class="flex-1 flex flex-col">
         @include('partials.instructor.topnav')
 
-        <main class="flex-1 p-6">
+        <main class="flex-1 p-6 pb-18 max-h-screen overflow-y-scroll">
             {{ $slot }}
         </main>
     </div>

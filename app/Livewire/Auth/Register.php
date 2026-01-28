@@ -52,6 +52,17 @@ class Register extends Component
         $user->assignRole($validated['role']);
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        // Redirect users to their role-specific dashboards
+        $user = Auth::user();
+
+        if ($user->hasRole('admin')) {
+            $redirectRoute = route('admin.dashboard', absolute: false);
+        } elseif ($user->hasRole('instructor')) {
+            $redirectRoute = route('instructor.dashboard', absolute: false);
+        } else {
+            $redirectRoute = route('student.dashboard', absolute: false);
+        }
+
+        $this->redirectIntended(default: $redirectRoute, navigate: true);
     }
 }

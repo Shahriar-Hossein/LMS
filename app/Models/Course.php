@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Scopes\ActiveScope;
 
 class Course extends Model
@@ -71,18 +72,20 @@ class Course extends Model
     /**
      * Set unique slug for the course.
      * - Use title if unique
-     * - Append ID if there's a conflict
+     * - Append incremental counter if there's a conflict
      */
     public static function setSlug ($course) {
-        $slug = Str::slug($course->title);
+        $base = Str::slug($course->title);
+        $slug = $base;
+        $counter = 1;
 
-        if (
+        while (
             static::where('slug', $slug)
-                ->when( $course->exists,
-                    fn($q) => $q->where('id', '<>', $course->id)
-                )->exists()
+                ->when($course->exists, fn($q) => $q->where('id', '<>', $course->id))
+                ->exists()
         ) {
-            $slug .= '-' . $course->id;
+            $slug = $base . '-' . $counter;
+            $counter++;
         }
 
         $course->slug = $slug;
@@ -95,11 +98,12 @@ class Course extends Model
         // Globally add for all query.
         // static::addGlobalScope(new \App\Models\Scopes\ActiveScope);
 
-        static::created(function ($course) {
+        // Generate slug before the model is created so `slug` exists on insert
+        static::creating(function ($course) {
             static::setSlug($course);
-            $course->save();
         });
-        // only change slug if title was updated.
+
+        // Only change slug if title was updated (run before update so slug is saved)
         static::updating(fn ($course) => $course->isDirty('title') ? static::setSlug($course) : null);
     }
 
@@ -121,5 +125,45 @@ class Course extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Get the modules for the course
+     */
+    public function modules()
+    {
+        return $this->hasMany(\App\Models\Module::class)->orderBy('position');
+    }
+
+    /**
+     * The students enrolled in the course (pivot table `course_student`).
+     */
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'course_student', 'course_id', 'user_id');
+    }
+
+    /**
+     * Payments for this course
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(\App\Models\CourseReview::class);
+    }
+
+    public function averageRating(): float
+    {
+        $avg = $this->reviews()->avg('rating');
+        return $avg ? round((float) $avg, 1) : 0.0;
+    }
+
+    public function reviewsCount(): int
+    {
+        return (int) $this->reviews()->count();
     }
 }
