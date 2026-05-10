@@ -125,5 +125,3 @@ php artisan test
 ## Contributing
 Contributions are welcome. Please open issues or PRs for bug fixes, features, or documentation improvements.
 
-## License
-This project is open source — add your preferred license here.
